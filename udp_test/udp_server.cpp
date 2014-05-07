@@ -1,3 +1,11 @@
+/*========================================================================
+#   FileName: udp_server.cpp
+#     Author: kevinlin
+#      Email: linjiang1205@qq.com
+#   History:  a simple udp echo server 
+#           为了测试recvfrom()中获得的sockaddr是否固定
+# LastChange: 2014-05-07 23:03:53
+========================================================================*/
 #include <arpa/inet.h>
 #include <errno.h>
 #include <sys/types.h>          /* See NOTES */
@@ -55,7 +63,7 @@ void dg_echo(int sockfd, struct sockaddr *sockaddr, socklen_t addrlen)
 {
     int n;
     socklen_t len;
-    char msg[MAX_LEN];
+    char msg[MAX_LEN] = {0};
 
     for(;;) {
         len = addrlen;
@@ -66,7 +74,9 @@ void dg_echo(int sockfd, struct sockaddr *sockaddr, socklen_t addrlen)
         }
         unsigned short port = ((struct sockaddr_in*)sockaddr)->sin_port;
         char* ip_addr = inet_ntoa(((struct sockaddr_in*)sockaddr)->sin_addr);
-        printf("recv data from(%s:%d): len(%u) data(%s)",
+        //remove \n 
+        //msg[strlen(msg) -1] = 0;
+        printf("recv data from(%s:%d): len(%u) data:%s",
                ip_addr, port,  len, msg);
         sendto(sockfd, msg, n, 0, sockaddr, len);
     }

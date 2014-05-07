@@ -47,10 +47,11 @@ void
 dg_cli(FILE* fp, int sockfd, const sockaddr* pservaddr, socklen_t len)
 {
     int n;
-    char sendline[MAX_LEN];
-    char recvline[MAX_LEN + 1];
+    char sendline[MAX_LEN] = {0};
+    char recvline[MAX_LEN + 1] = {0};
 
     while(fgets(sendline, MAX_LEN, fp) != NULL){
+        //printf("req: len(%lu) %s\n", strlen(sendline), sendline);
         int s = sendto(sockfd, sendline, strlen(sendline), 0, pservaddr, len);
         if(s == -1){
             printf("sendto failed:%s\n", strerror(errno));
