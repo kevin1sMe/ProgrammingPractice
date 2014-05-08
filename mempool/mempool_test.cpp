@@ -13,7 +13,9 @@ int
 main(int argc, char** argv) {
     void *mem = malloc(ALLOC_BYTES);
 
-    mempool<mydata> pool(mem, ALLOC_BYTES);
+    mempool<mydata> pool;
+    
+    pool.init(mem, ALLOC_BYTES);
 
     struct mydata *data = pool.malloc();
     printf("data:%p mem:%p\n",data, mem);
