@@ -1,4 +1,4 @@
-##Welcom to kevin's workspace
+##Welcome to kevin's workspace
 
 ```Reading pretty code is an interesting and exciting things, isn't it?```
 
