@@ -14,9 +14,6 @@
 	* add at 2014-5-7 
 	* for learn how to use git
 
-* mempool
-	* add at 2014-5-8 
-	* a simple realize of memory pool
 
 
 
