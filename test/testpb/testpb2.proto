@@ -1,0 +1,14 @@
+package testpb;
+
+message TestReq
+{
+    optional string str = 1;
+    repeated int32 int_list = 2;
+}
+
+
+message TestRsp
+{
+    optional int32 sum = 2; //sum of req.int_list
+}
+
