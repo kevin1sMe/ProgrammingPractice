@@ -64,24 +64,10 @@ tcp_server::test_loop()
     fd_set read_fds;
     vector<int> conn_fds;
 
+    //add server listen sockect for select
+    conn_fds.push_back(socket_fd_);
+
     while(1) {
-        //accept client connect
-        //just test, it's wrong to do accept like this
-        int conn_fd = accept(socket_fd_, (struct sockaddr*)&client, &client_addr_len);    
-        if(conn_fd < 0) {
-            //printf("accept from %d failed:%s", socket_fd_, strerror(errno));
-            //break;
-        } else {
-            char remote[64] = {0};
-            printf("connected from %s:%d accept as fd[%d].\n", 
-                    inet_ntop(AF_INET, &client.sin_addr, remote, sizeof(remote)), 
-                    ntohs(client.sin_port),
-                    conn_fd
-                );
-
-            conn_fds.push_back(conn_fd);
-        }
-
         //read data if have.. noblock
         int maxfds = 0;
         FD_ZERO(&read_fds);
@@ -102,16 +88,29 @@ tcp_server::test_loop()
 
         for(size_t i=0; i < conn_fds.size(); ++i) {
             if(FD_ISSET(conn_fds[i], &read_fds)) {
-                ret = recv(conn_fds[i], buf, sizeof(buf) - 1, 0);
-                if(ret <=0 ) {
-                    printf("recv from fd[%d] break\n", conn_fds[i]);
-                }else {
-                    printf("get %d bytes from fd[%d]|%s", ret, conn_fds[i], buf);
+                if(socket_fd_ == conn_fds[i]) { //a new connect received
+                    int conn_fd = accept(socket_fd_, (struct sockaddr*)&client, &client_addr_len);    
+                    if(conn_fd < 0) {
+                        printf("accept from %d failed:%s", socket_fd_, strerror(errno));
+                    } else {
+                        char remote[64] = {0};
+                        printf("connected from %s:%d accept as fd[%d].\n", 
+                                inet_ntop(AF_INET, &client.sin_addr, remote, sizeof(remote)), 
+                                ntohs(client.sin_port),
+                                conn_fd
+                              );
+                        conn_fds.push_back(conn_fd);
+                    }
+                }else{
+                    ret = recv(conn_fds[i], buf, sizeof(buf) - 1, 0);
+                    if(ret <=0 ) {
+                        printf("recv from fd[%d] break\n", conn_fds[i]);
+                    }else {
+                        printf("get %d bytes from fd[%d]|%s", ret, conn_fds[i], buf);
+                    }
                 }
             }
         }
-
-
-    };
+    }
     return 0;
 }
