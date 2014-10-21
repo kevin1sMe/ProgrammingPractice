@@ -6,9 +6,11 @@ client端使用golang写的，见tcp_client.go
 1. select()受最大fd的影响。。。
 　结论：　当accept()　fd > MAX_FD时，　崩溃。。
 
-2. select()的性能, 后续和poll, epoll比较
+2. select()的性能, 后续和poll, epoll比较  
+
  * 建立xx个连接速度比较
- ```/home/kevin/repo/network_test/tcp_test ➤ ./tcp_client 127.0.0.1:1986 100                                                 git:master*
+ ```sh
+/home/kevin/repo/network_test/tcp_test ➤ ./tcp_client 127.0.0.1:1986 100                                                 git:master*
  === create 100 connections used 17.429611 ms ===
  /home/kevin/repo/network_test/tcp_test ➤ ./tcp_client 127.0.0.1:1986 100                                                 git:master*
  === create 100 connections used 16.137430 ms ===
@@ -45,5 +47,6 @@ client端使用golang写的，见tcp_client.go
  /home/kevin/repo/network_test/tcp_test ➤ ./tcp_client 127.0.0.1:1986 200                                                 git:master*
  === create 200 connections used 24.894501 ms ===
  ```
- 
+
+
  * 连接建立后，进行数据传输稳定时的cpu,memory占用情况比较
