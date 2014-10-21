@@ -10,9 +10,12 @@
 #include "tcp_server.h"
 #include <vector>
 #include <fcntl.h>
+#include <time.h>
+#include <algorithm>
 
 using namespace std;
 
+#define MAX_FD 1024
 extern int errno;
 
 int 
@@ -93,6 +96,13 @@ tcp_server::test_loop()
                     if(conn_fd < 0) {
                         printf("accept from %d failed:%s", socket_fd_, strerror(errno));
                     } else {
+                        //conn_fd <= MAX_FD (ulimit -n)
+                        if(conn_fd >= MAX_FD) {
+                            printf("conn_fd is [%d] great than MAX_FD(%d)\n", conn_fd, MAX_FD);
+                            close(conn_fd);
+                            continue;
+                        }
+
                         char remote[64] = {0};
                         printf("connected from %s:%d accept as fd[%d].\n", 
                                 inet_ntop(AF_INET, &client.sin_addr, remote, sizeof(remote)), 
@@ -102,11 +112,45 @@ tcp_server::test_loop()
                         conn_fds.push_back(conn_fd);
                     }
                 }else{
-                    ret = recv(conn_fds[i], buf, sizeof(buf) - 1, 0);
+                    ret = recv(conn_fds[i], buf, sizeof(buf) - 1, 0); //MSG_NOSIGNAL?
                     if(ret <=0 ) {
-                        printf("recv from fd[%d] break\n", conn_fds[i]);
+                        printf("recv from fd[%d] failed\n", conn_fds[i]);
+
+                        //errno != EINTR
+                        if(0 == ret) {
+                            //maybe closed by peer
+                            int fd = conn_fds[i];
+                            conn_fds.erase(
+                                    std::remove(conn_fds.begin(), 
+                                        conn_fds.end(), 
+                                        fd), 
+                                    conn_fds.end()
+                                    );
+                            close(fd);
+                            printf("fd[%d] closed\n", fd);
+                        } else if(-1 == ret) {
+                            printf("recv from fd[%d] failed: %s\n", conn_fds[i], strerror(errno));
+                        }
+
+                        
                     }else {
-                        printf("get %d bytes from fd[%d]|%s", ret, conn_fds[i], buf);
+                        printf("get %d bytes from fd[%d]|%s\n", ret, conn_fds[i], buf);
+
+                        //send
+                        struct tm t;
+                        time_t now = time(NULL);
+                        localtime_r(&now, &t);
+                        char send_buff[64] = {0};
+                        strftime(send_buff, sizeof(send_buff), "%Y-%m-%d %H:%M:%S", &t);
+                        ret = send(conn_fds[i], send_buff, strlen(send_buff) + 1, 0);
+                        if(ret <=0 ) {
+                            printf("send to fd[%d] failed:%s\n", 
+                                    conn_fds[i], 
+                                    strerror(errno)
+                                  );
+                        }else {
+                            printf("send to fd[%d] succ\n", conn_fds[i]);
+                        }
                     }
                 }
             }
