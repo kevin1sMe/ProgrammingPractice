@@ -1,0 +1,97 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+
+<style type="text/css">
+
+/*设置输入框样式 */
+.textInput {
+	background-color: #cccccc;
+	border-width: 2px;
+	border-style: border;
+	border-color: #1a3f95;	
+}
+
+/* 使listbox中的几个选项展示区别开来 */
+select option {
+	background-color: #dae5f5;
+}
+
+select .l1 {
+	background-color: #ffffff;
+}
+
+select .l2 {
+	background-color: #435269;
+	color: white;
+}
+
+.textAreaStyle {
+	width: 250px; 
+	height: 100px;
+	border: 1px solid #58805f;
+	
+}
+
+.submitButton {
+	width: 100px; 
+	height: 25px;
+	margin-top :20px;
+	margin-left: 186px;
+	font-size: 12px;
+	font-weight: bold;
+	border: 2px solid #abd8b3;
+	border-right-color: #58805f;
+	border-bottom-color: #58805f;
+	background-color: #a6d3ae;
+	color: white;	
+}
+</style>
+</head>
+
+<body>
+<form name="form1" id="form1" method="post" action="">
+您是否曾使用过表格式布局？
+是<input name="c1" type="radio" value="yes" />
+否<input name="c1" type="radio" value="no" />
+<br/>
+<br/>
+您是否开始使用CSS布局？
+是<input name="c2" type="radio" value="yes" />
+否<input name="c2" type="radio" value="no" />
+<br/>
+<br/>
+是订阅CSS邮件？
+<input name="submail" type="checkbox" value="sub" /> 
+是的
+<br/>
+<br/>
+您所从事的行业：
+<select name="job">
+	<option class="l1" > -请选择您所从事的行业-</option>
+    <option class="l2" > -IT行业-</option>
+    <option> 设计师 </option>
+    <option> 程序员 </option>
+    <option> 总监 </option>
+    <option class="l2" > -传统行业-</option>
+    <option> 美术编辑 </option>
+    <option> 项目经理 </option>
+</select>
+
+<br />
+<br />
+请留下您的姓名：
+<input type="text" name="name" class="textInput" />
+<br />
+<br />
+请留下您的建议：
+<textarea name="comment" class="textAreaStyle"> </textarea>
+<br />
+<br />
+
+<input type="submit" name="submit" class="submitButton" value="提交" />
+</form>
+</body>
+</html>
