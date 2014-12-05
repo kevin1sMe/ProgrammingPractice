@@ -1,0 +1,23 @@
+#!/bin/bash
+
+source bashlib
+#. /usr/local/bin/bashlib
+
+cat ./header.txt
+
+echo "<font color=red>processing xls to lua ......</font>"
+echo "process xls" >> /data/ml/svn/info.log
+cd /data/ml/svn/excel2lua/; svn up excel/Skill.xlsx; svn up excel/ml_card_info.xls
+cd /data/ml/svn/excel2lua/; /data/ml/svn/excel2lua/./do_skill.sh
+
+echo "<font color=red>processing svn check-in......</font>" 
+echo "process svn" >> /data/ml/svn/info.log
+cd /data/ml/svn/excel2lua/; svn ci -m "update: for webadmin" lua/
+
+echo "<font color=red>server config refresing ......</font>"
+echo "process svr" >> /data/ml/svn/info.log
+cp /data/ml/svn/zonesvr/lua/* /data/ml/zonesvr/lua/
+cd /data/ml/zonesvr/script/; ./admin.sh restart
+
+echo "process done" >> /data/ml/svn/info.log
+echo "update successful."

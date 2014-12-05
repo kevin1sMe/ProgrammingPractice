@@ -1,0 +1,19 @@
+#!/bin/bash
+
+source bashlib
+#. /usr/local/bin/bashlib
+
+source SetGMEnv
+cat ./header.txt
+
+uin=`param uin`
+cmd=`param cmd`
+dungeonMode=`param DungeonMode`
+dungeonId=`param DungeonId`
+battleId=`param BattleId`
+teamId=`param TeamId`
+
+echo "QQ:$uin setCombatInfo $cmd mode=$dungeonMode dungeonId=$dungeonId battleId=$battleId teamId=$teamId"
+echo ""
+
+${GMTOOL_PATH} ${GMTOOL_IP} ${GMTOOL_PORT} $uin $cmd DungeonMode=$dungeonMode DungeonId=$dungeonId BattleId=$battleId TeamId=$teamId 

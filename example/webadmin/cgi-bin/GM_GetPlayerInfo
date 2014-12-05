@@ -1,0 +1,13 @@
+#!/bin/bash
+
+source bashlib
+#. /usr/local/bin/bashlib
+
+source SetGMEnv
+cat ./header.txt
+
+uin=`param uin`
+
+#echo $uin 
+
+${GMTOOL_PATH} ${GMTOOL_IP} ${GMTOOL_PORT}  $uin 0 0

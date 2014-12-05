@@ -1,0 +1,13 @@
+#!/bin/bash
+
+source bashlib
+#. /usr/local/bin/bashlib
+
+source SetGMEnv
+cat ./header.txt
+
+openid=`param openid`
+
+#echo $uin 
+
+${GMTOOL_PATH} ${GMTOOL_IP} ${GMTOOL_PORT}  888888 22 $openid

@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>ML后台管理工具[开发环境一] - 系统首页</title>
+<link href="css/reset.css" rel="stylesheet" type="text/css" />
+<link href="css/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/global.js"></script>
+<base target="right" />
+</head>
+
+<body class="index">
+<div class="header">
+	<!--div class="logo"><a href="/" target="_top"></a></div-->
+    <div class="shadowtitle">ML 后台管理工具</div>
+    <div class="top_link">
+    	<div class="top_menu"><span id="hello"></span>，<span id="date"></span></div>
+        <div class="user_info">服务器IP：10.12.194.36</div>
+    </div>
+</div>
+
+<div class="wrap clear">
+	<div class="left">
+    	<div class="left_cont">
+        	<div class="menu_left">
+            	<div id="loading">菜单加载中...</div>
+            </div>
+        </div>
+    </div>
+    <a href="javascript:void(0);" class="center" id="closeOpen"></a>
+    <div class="right">
+    	<div class="main_title">当前位置：<a href="main.html">管理首页</a> &gt; <span style="color:#444;" id="urlName"></span></div>
+        <div class="main_content">
+        	<div class="main_cont">
+            	<iframe scrolling="auto" height="auto" frameborder="false" allowtransparency="true" style="width:100%;border:none; overflow-y:auto; overflow-x:hidden;" src="main.html" id="rightMain" name="right"></iframe>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

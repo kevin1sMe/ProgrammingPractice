@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>删除卡牌</title>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/jquery.ui.core.js"></script>
+<script type="text/javascript" src="js/jquery.ui.widget.js"></script>
+<script type="text/javascript" src="js/jquery.ui.datepicker.js"></script>
+<script type="text/javascript" src="js/jquery.date.cn.js"></script>
+<script type="text/javascript" src="js/page.js"></script>
+<link href="js/themes/flick/jquery.ui.all.css" rel="stylesheet" type="text/css" />
+<link href="js/themes/flick/jquery.ui.datepicker.css" rel="stylesheet" type="text/css" />
+<link href="css/reset.css" rel="stylesheet" type="text/css" />
+<link href="css/page.css" rel="stylesheet" type="text/css" />
+
+<style type="text/css">
+.result{ position:relative;}
+#code{ padding-top:4px;}
+.result pre{ background-color:#fcfeff; border:1px dashed #999;line-height:18px;padding-left:40px; margin:0; text-indent:0px;}
+#lineID{ position:absolute;line-height:18px; padding:0 4px; left:1px; top:5px; background-color:#999; color:#FFF; font-size:12px;}
+</style>
+<script type="text/javascript">
+function setInfo(){
+	var uin = $("#uin").val();
+	var cardId = $("#cardId").val();
+	var cardXn = $("#cardXn").val();
+	var cmd = $("#cmd").val();
+	$.ajax({
+	  type: "POST",
+	  url: "/cgi-bin/GM_SetPlayerCard",
+	  dataType: "html",
+	  data:"uin="+uin+"&cardId="+cardId+"&cardXn="+cardXn+"&cmd="+cmd,
+	  success:function(data){
+		  $("#code").html(data+"</pre>");
+		  getLine();
+
+	  },
+	  error:function(){
+		  location.href = "../tips.html";
+	  }
+	});	
+}
+
+var timeer = null;
+function getLine(){
+	clearTimeout(timeer);
+	timeer = setTimeout(function(){
+	  var divHeight = $("#code")[0].offsetHeight;
+	  if(parseInt(divHeight)>0){
+		var row = Math.floor(divHeight/18);
+		$("#lineID")[0].innerHTML = "";
+		$("#lineID")[0].style.height = row*18 + "px";
+		$("#lineID")[0].style.display = "block";
+		
+		for(var i=0;i<row;i++){
+			$("#lineID")[0].innerHTML+=(i+1)+"<br />";
+		}
+	  }					
+	},60)	
+}
+</script>
+</head>
+<body>
+<input type="hidden" name="cmd" id="cmd" value="10">
+<div class="p10">
+	<div class="warn">
+	  <form method="" action="" name="">
+	  　QQ号码：
+	  <input type="text" class="input-text" name="uin" id="uin">
+	    CardId:
+	  <input type="text" class="input-text" name="cardId" id="cardId">
+	    CardKey:
+	  <input type="text" class="input-text" name="cardXn" id="cardXn">
+      <input type="button" class="button" value="确定" name="" onclick="setInfo();" ></form>
+    </div>
+	<div class="result">
+        <div id="code"><pre>暂无数据...</pre></div>
+        <div id="lineID" style="display:none;"></div>
+    </div>
+</div>
+</body>
+</html>
+

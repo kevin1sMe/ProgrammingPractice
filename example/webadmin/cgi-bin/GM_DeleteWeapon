@@ -1,0 +1,22 @@
+#!/bin/bash
+
+source bashlib
+#. /usr/local/bin/bashlib
+
+source SetGMEnv
+
+cat ./header.txt
+
+uin=`param uin`
+cmd=`param cmd`
+WeaponKey=`param WeaponKey`
+
+case $cmd in
+29)
+	echo "QQ:$uin Delete Weapon/$cmd: $WeaponKey"
+	;;
+esac
+
+echo ""
+
+${GMTOOL_PATH} ${GMTOOL_IP} ${GMTOOL_PORT} $uin $cmd WeaponKey=$WeaponKey

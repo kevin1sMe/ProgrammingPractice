@@ -1,0 +1,26 @@
+#!/bin/bash
+
+source bashlib
+#. /usr/local/bin/bashlib
+
+source SetGMEnv
+cat ./header.txt
+
+uin=`param uin`
+cmd=`param cmd`
+itemId=`param itemId`
+itemNb=`param itemNb`
+
+case $cmd in
+11)
+	echo "QQ:$uin Add Item/$cmd: $itemId, $itemNb"
+	;;
+12)
+	echo "QQ:$uin Del Item/$cmd: $itemId, $itemNb"
+	;;
+
+esac
+
+echo ""
+
+${GMTOOL_PATH} ${GMTOOL_IP} ${GMTOOL_PORT} $uin $cmd ItemId=$itemId ItemNb=$itemNb

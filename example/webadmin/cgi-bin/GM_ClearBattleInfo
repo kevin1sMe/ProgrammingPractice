@@ -1,0 +1,16 @@
+#!/bin/bash
+
+source bashlib
+#. /usr/local/bin/bashlib
+
+source SetGMEnv
+
+cat ./header.txt
+
+uin=`param uin`
+cmd=`param cmd`
+
+echo "QQ:$uin ClearBattleInfo $cmd "
+echo ""
+
+${GMTOOL_PATH} ${GMTOOL_IP} ${GMTOOL_PORT} $uin $cmd 1=1

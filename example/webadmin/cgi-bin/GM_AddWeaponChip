@@ -1,0 +1,23 @@
+#!/bin/bash
+
+source bashlib
+#. /usr/local/bin/bashlib
+
+source SetGMEnv
+
+cat ./header.txt
+
+uin=`param uin`
+cmd=`param cmd`
+WeaponChipID=`param WeaponChipID`
+Num=`param Num`
+
+case $cmd in
+26)
+	echo "QQ:$uin Delete Weapon/$cmd: $WeaponChipID $Num"
+	;;
+esac
+
+echo ""
+
+${GMTOOL_PATH} ${GMTOOL_IP} ${GMTOOL_PORT}  $uin $cmd WeaponChipID=$WeaponChipID Num=$Num

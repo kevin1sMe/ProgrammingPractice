@@ -1,0 +1,54 @@
+#!/bin/bash
+
+source bashlib
+#. /usr/local/bin/bashlib
+
+source SetGMEnv
+cat ./header.txt
+
+uin=`param uin`
+val=`param val`
+cmd=`param cmd`
+
+property="Level"
+
+case $cmd in
+1) property="Level"
+	;;
+2) property="Energy"
+	;;
+3) property="MaxEnergy"
+	;;
+4) property="Gold"
+	;;
+5) property="Leadership"
+	;;
+6) property="MaxLeadership"
+	;;
+7) property="Money"
+	;;
+8) property="CardExpPool"
+	;;
+16) property="Exp"
+    ;;
+18) property="BaValue"
+    ;;
+19) property="BaValue"
+    ;;
+30) property="VipLevel"
+    ;;
+32) property="Total"
+    ;;
+34) property="BattleId"
+    ;;
+42) property="honor"
+    ;;
+44) property="days"
+   ;;
+
+esac
+
+echo "QQ:$uin command=$cmd, set $property=$val"
+echo ""
+
+${GMTOOL_PATH} ${GMTOOL_IP} ${GMTOOL_PORT} $uin $cmd $property=$val 
