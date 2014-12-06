@@ -1,0 +1,150 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+
+<style type="text/css">
+
+#browser {
+	width: 700px;	
+	margin: 0px auto;
+	border-collapse:collapse; /* 将单元格中的线条合并，不然某个单元格都有1px的边框 */
+	font-family:arial;
+	text-align:center;
+}
+
+#browser th,td {
+	border: 1px solid #aaa;	
+}
+
+/*控制表头 */
+#browser thead th {
+	border-bottom: 2px solid #3D580B;
+	background-color: #8FC629;
+	color: #fff;
+	padding: 10px 0px;	
+}
+
+
+#browser th {
+	background-color: #F2F4B9;
+}
+
+#browser th.title {
+	background-color: #E4E685;	
+}
+
+#browser tfoot td {
+	border-width: 0px;
+	text-align: right;
+	font-size: 12px;
+	color: #777;
+}
+
+#browser caption {
+	font-weight: bold;
+	padding: 6px 0px;
+	color : #3D580B;
+	font-size: 25px;
+}
+
+
+#xhtml th.title {
+	background-color: #FFD56C;
+}
+
+#xhtml th {
+	background-color: #FFE8AE;	
+}
+
+
+.bl {
+	border-left: none;	
+}
+
+.br {
+	border-right: none;
+}
+
+
+</style>
+
+</head>
+
+<body>
+<table id="browser">
+	<caption>浏览器兼容性一览表</caption>
+   	<thead>
+    	<tr>
+        	<th> CSS特征 </th>
+            <th> MSIE 6.0 </th>
+            <th> FireFox 1.0 </th>
+            <th> FireFox1.5 </th>
+            <th> Opera 8.5 </th>
+        </tr>
+     </thead>
+     <tbody id="html">
+     	<tr>
+        	<th colspan="5" class="title"> HTML 4.01</th>
+         <tr>
+         <tr>
+         	<th class="bl"> a</th>
+            <td> 81%</td>
+            <td> 85%</td>
+            <td> 85%</td>
+            <td> 94%</td>
+      	</tr>
+        
+        <tr>
+        	<th class="br"> abbr</th>
+            <td>94%</td>
+            <td>97% </td>
+            <td>85% </td>
+            <td>94% </td>
+        </tr>
+        
+        <tr>
+        	<th>acronm</th>
+            <td> 94% </td>
+            <td> 97% </td>
+            <td> 97% </td>
+            <td> 75% </td>            
+     <tbody>
+     
+      <tbody id="xhtml">
+     	<tr>
+        	<th colspan="5" class="title"> XHTML 1.0</th>
+         <tr>
+         <tr>
+         	<th> HTML in XML </th>
+            <td> N</td>
+            <td> Y</td>
+            <td> Y</td>
+            <td> Y</td>
+      	</tr>
+        
+        <tr>
+        	<th> well-formed</th>
+            <td>Y</td>
+            <td>Y </td>
+            <td>Y </td>
+            <td>Y </td>
+        </tr>
+        
+        <tr>
+        	<th>Media Types</th>
+            <td> N </td>
+            <td> Y </td>
+            <td> Y </td>
+            <td> Y </td>            
+     <tbody>
+     
+     <tfoot>
+     	<tr>
+        	<td colspan="5"> 资料来源: http://www.Webdevout.net </td>
+        </tr>
+    </tfoot>
+</table>
+</body>
+</html>
