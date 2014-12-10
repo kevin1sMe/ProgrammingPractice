@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+
+<style type="text/css">
+/* 垂直居中 功能  ,  在IE/chrome中测试OK  */
+
+#outBox {
+	border: 2px solid #333;
+	height: 200px;
+	overflow: hidden;
+	position: relative;	
+}
+
+#outBox[id] {
+	display: table;
+	position: static;	
+}
+
+#midBox {
+	border: 2px solid #555;
+	position: absolute;
+	top: 50%;
+	width: 200px;
+	margin: 0 50px;
+}
+
+#midBox[id] {
+	display: table-cell;
+	vertical-align: middle;
+	position: static;	
+}
+
+#inBox {
+	position: relative; top; -50%;	
+}
+
+</style>
+</head>
+
+<body>
+<div id="outBox">
+	<div id="midBox">
+    	<div id="inBox" >
+    	需要垂直居中的内容<br />
+        需要垂直居中的内容
+        </div>
+    </div>
+</div>
+</body>
+</html>
