@@ -1,5 +1,6 @@
 ##python socket and nc server
 
+In mac osx10.10
 ---
 ###Server
 
