@@ -6,3 +6,45 @@
     height: 219px;
     background: url(http://ossweb-img.qq.com/images/hyrz/web201503/page_top.jpg) 50% 0 no-repeat
 }
+
+.content{
+    width: 100%;
+}
+
+.my_iframe{
+    width: 200px;
+    height: 200px;
+}
+
+.menu{
+    list-style: none;
+    margin: 0px;
+    padding: 0px;
+}
+
+.menu li{
+    height: 50px;
+}
+
+#left-side{
+    width: 15%;
+    float: left;
+}
+
+#right-side{
+    width: 85%;
+    float: left;
+}
+
+#stauts{
+    width:100%;
+}
+
+.wrap{
+    width: 100%;
+}
+
+.menuList{
+    border-bottom: 1px solid #000000;
+
+}
