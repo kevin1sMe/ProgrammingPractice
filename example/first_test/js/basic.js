@@ -5,6 +5,8 @@
 
 $(document).ready(function(){
     $(".form-group > button").click(function(){
+        //$(this).parent().find(".sublist").addClass("hidden");
+        $(".form-group > .sublist").addClass("hidden");
         $(this).next(".sublist").toggleClass("hidden");
     });
 

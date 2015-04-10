@@ -17,6 +17,9 @@ showPlayer = function(data){
         $(".main_select").append(html);
     }
     //$("<option> hello </option>").appendTo($(".main_select"));
+    var ret='succeeded. result: ret_info { ret_code: 0 ret_msg: "\346\201\255\345\226\234\344\275\240\344\277\256\346\224\271\346\210\220\345\212\237!" }';
+    console.log(ret);
+    //console.log(urlencode(ret));
 };
 
 
