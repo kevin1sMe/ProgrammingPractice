@@ -35,7 +35,8 @@ $(document).ready(function(){
     var PlayerLists="";
 
     //去拉取玩家列表
-    $.getJSON("http://10.12.190.83/cgi-bin/webtool?cmd=get_player_list", function(data){
+    //$.getJSON("http://10.12.190.83/cgi-bin/webtool?cmd=get_player_list", function(data){
+      $.getJSON("/cgi-bin/webtool?cmd=get_player_list", function(data){
         console.log("getJson");
         playerLists = data;
         console.dir(data);

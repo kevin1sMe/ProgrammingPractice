@@ -4,53 +4,31 @@
     <meta charset="UTF-8">
     <title> 基本信息修改页</title>
     <link href="bootstrap-3.3.4/css/bootstrap.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="js/handlebars-v3.0.1.js"></script>
 </head>
 <body>
-<div class="col-md-4" >
-    <div class="form-group">
-        <button type="button" class="btn btn-primary btn-lg btn-block"> 经验</button>
+<div class="col-md-4" id="optList">
+
+    <script id="optDetail" type="text/x-handlebars-template">
+        <div class="form-group">
+        <button type="button" class="btn btn-primary btn-lg btn-block"> {{name}}</button>
         <div class="sublist hidden" >
-            <label for="exp" class="funcLabel" > 经验 </label>
-            <input id="exp" type="text" class="form-control funcInput" placeholder="填写经验数值" >
-            <button type="submit" class="btn btn-info funcBtn" > 提交</button>
+            <label for="{{id}}" class="funcLabel" > {{name}} </label>
+            <input id="{{id}}" type="text" class="form-control funcInput" placeholder="{{desc}}" data-url="{{url}}">
+            <button type="submit" class="btn btn-info funcBtn" disabled="true"> 提交</button>
+            <p id="result" class="hidden">这里是结果</p>
         </div>
     </div>
+    </script>
 
-     <div class="form-group">
-        <button type="button" class="btn btn-primary btn-lg btn-block"> 金币</button>
-        <div class="sublist hidden">
-            <label for="gold" float="left"> 金币 </label>
-            <input id="gold" type="text" float="left" class="form-control" placeholder="填写金币数值" >
-            <button type="submit" float="left" class="btn btn-info" float="left"> 提交</button>
-        </div>
-    </div>
 
-    <button type="button" class="btn btn-primary btn-lg btn-block"> 铜板</button>
 </div>
+
 
 <script type="text/javascript" src="js/jquery-1.11.2.min.js"></script>
 <script type="text/javascript" src="bootstrap-3.3.4/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/basic.js"></script>
 
-<script>
-    $(document).ready(function(){
-        $(".form-group > button").click(function(){
-//            $($(this, "> div")).toggleClass("hidden");
-//            alert($(this).children(".sublist"));
-            $(this).next(".sublist").toggleClass("hidden");
-        });
-    });
-
-    funcList = [
-        {"name":"经验", "id": "exp",  "desc": "填写经验数值"},
-        {"name":"金币", "id": "gold", "desc": "填写提交数值"},
-    ];
-
-    showList = function(){
-
-    }();
-
-
-</script>
 
 </body>
 </html>
