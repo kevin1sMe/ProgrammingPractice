@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title></title>
     <link href="css/style.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="js/handlebars-v3.0.1.js"></script>
     <!--<link href="bootstrap-3.3.4/css/bootstrap.css" rel="stylesheet" type="text/css" />-->
 </head>
 <body>
@@ -12,22 +13,23 @@
         <h1 class="title"> 火影忍者后台管理工具</h1>
     </div>
 </header>
+<!--<option class="{{op_name}}" player_id="{{player_id}}"> {{name}} </option>-->
 <div id="status">
     <span class="online_tips"> 当前玩家总数：0 </span>
     <select class="main_select">
-        <option> kevin</option>
-        <option> lin</option>
+        <script id="player_list_template" type="text/x-handlebars-template">
+            <option class="{{op_name}}" player_id="{{player_id}}" zone_id="{{zone_id}}"> {{name}} </option>
+        </script>
     </select>
 </div>
 <div class="wrap" >
     <div id="left-side">
         <ul class="menu" data-role="listview">
-            <li>
-                test1
-            </li>
-            <li>
-                test2
-            </li>
+            <script id="menu_list_template" type="text/x-handlebars-template">
+                <li class="menuList" url="{{url}}">
+                    {{name}}
+                </li>
+            </script>
         </ul>
 
     </div>

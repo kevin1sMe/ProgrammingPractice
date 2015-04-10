@@ -1,31 +1,24 @@
 /**
+ *
  * Created by kevin on 15/4/9.
  */
-$(document).ready(function(){
-    $(".menu > li").click(function(){
-        var iframe = $("iframe");
-        $("iframe").attr("src",$(this).attr("url"));
-    });
 
-    //去拉取玩家列表
-    $.getJSON("http://10.12.190.83/cgi-bin/webtool?cmd=get_player_list", function(data){
-    //    $.getJSON("http://localhost:63342/", function(data){
-        playerLists = data;
-        console.dir(data);
-    });
+showPlayer = function(data){
+    $("#status span").text("当前总玩家:" + data.length);
+    var source   = $("#player_list_template").html();
+    console.log(source);
+    console.dir(data);
+    var template = Handlebars.compile(source);
+    $(".main_select").html("");
+    for(x in data){
+        var fill_data = {op_name: "opcls_test", player_id: data[x].player_id , zone_id: data[x].zone_id, name: data[x].name};
+        var html = template(fill_data);
+        console.log("html" + html);
+        $(".main_select").append(html);
+    }
+    //$("<option> hello </option>").appendTo($(".main_select"));
+};
 
-});
-
-
-playerLists = [
-    {"name": "kevin"},
-    {"name": "lin"},
-];
-
-showPlayer = function(){
-//        $("#status").children("span").text("当前总玩家:" + playerLists.length());
-    $("#status span").text("当前总玩家:" + playerLists.length);
-}();
 
 var funcLists = [
     {name:"基本信息", url:"basic.html"},
@@ -33,12 +26,45 @@ var funcLists = [
     {name:"背包",    url:""},
 ];
 
-showMenu = function(){
-    $(".menu").text("");
-    for( x in funcLists)
+$(document).ready(function(){
+    $(".menu > li").click(function(){
+        var iframe = $("iframe");
+        $("iframe").attr("src",$(this).attr("url"));
+    });
+
+    var PlayerLists="";
+
+    //去拉取玩家列表
+    $.getJSON("http://10.12.190.83/cgi-bin/webtool?cmd=get_player_list", function(data){
+        console.log("getJson");
+        playerLists = data;
+        console.dir(data);
+    }).error(function(data)
     {
-//            $('<li class="menuList"' + 'url=' + funcLists[x].url + '> ' + funcLists[x].name + '</li>').appendTo($(".menu"));
-//            $('<li class="menuList"' + 'url=' + funcLists[x].url + '> ' + funcLists[x].name + '</li>').appendTo($(".menu"));
-        console.dir(x);
+        console.log("getJson error");
+        //playerLists = [{"name":"not on line, zonesvr bug!!", "player_id":"11107", "zone_id":"0"}, {"name":"猫代王", "player_id":"1850286090", "zone_id":"400010"}, {"name":"前田荣二", "player_id":"791036170", "zone_id":"400010"}, {"name":"not on line, zonesvr bug!!", "player_id":"11118", "zone_id":"0"}];
+        playerLists = [{"name":"not on line, zonesvr bug!!", "player_id":"11107", "zone_id":"0"},
+                    {"name":"猫代王", "player_id":"1850286090", "zone_id":"400010"}
+            ];
+        console.log("error cause");
+        console.dir(playerLists);
+        showPlayer(playerLists);
+    });
+
+
+    showMenu(funcLists);
+
+});
+
+showMenu = function(data){
+    var source   = $("#menu_list_template").html();
+    console.log(source);
+    console.dir(data);
+    var template = Handlebars.compile(source);
+    $(".menu").html("");
+    for(x in data){
+        var html = template(data[x]);
+        console.log("html" + html);
+        $(".menu").append(html);
     }
-}();
+};
