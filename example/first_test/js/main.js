@@ -43,6 +43,7 @@ $(document).ready(function(){
         console.log("getJson");
         playerLists = data;
         console.dir(data);
+        showPlayer(playerLists);
     }).error(function(data)
     {
         console.log("getJson error");

@@ -29,8 +29,8 @@ body{
     display: inline-block;
     margin-left: 50px;
     text-align: center;
-    font-size: 40px;
-
+    font-size: 20px;
+    font-family: "Arial","Microsoft YaHei","黑体","宋体",sans-serif;;
 }
 
 .online_tips{
