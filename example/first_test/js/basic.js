@@ -7,6 +7,8 @@ $(document).ready(function(){
     $(".form-group > button").click(function(){
         $(this).next(".sublist").toggleClass("hidden");
     });
+
+    //$(".result").text("怎么就找不到你呢");
 });
 
 funcList = [
@@ -70,20 +72,30 @@ $(".funcBtn").click(function(){
     }
 
     //去请求cgi
-    var result = "";
     $.get(cgi, function(data){
-        console.log("get result:" + data);
-        result = data;
     }).success(function(data){
         console.log("req succ, rsp:" + data)
-        result = data;
+        //var result_p =  $(this).parent().find("#result").first();
+        //result_p.text(data);
+        //result_p.removeClass("hidden");
+        window.parent.$("#result").text(data.toString());
     }).error(function(data, status){
-        console.log("req failed, status:" + status)
-        result = "get failed. status:" + status + " " + data;
+        console.log("req failed, status:" + status + " data:" + data);
+
+        //data="testt.......";
+        //result_p.removeClass("hidden");
+
+        //console.dir("this:" + $(this).parent());
+        //var result_p =  $(this).parent().find(".result");
+        //result_p.text(".....q");
+
+        //console.dir("next:" + $(this).parent());
+        //$(this).next("p").text("this is next");
+        //window.parent.$("#result").text(data.toString());
+        window.parent.$("#result").text("这里展示结果。");
     });
 
-    console.log("result = " + result);
-    $(this).parent().find("#result").first().text(result);
+    //$("p").text("怎么就找不到你呢");
 
 });
 

@@ -2,7 +2,7 @@
 body{
     /*width:900px;*/
     text-align: center;
-    height: 800px;
+    height: auto;
     margin: 0px;
     padding: 0px;
 }
@@ -71,13 +71,23 @@ body{
 }
 .my_iframe{
     border:  0px solid ;
-    width: 90%;
+    width: 50%;
     height: 100%;
+    float: left;
 }
 
 
 #stauts{
     width:100%;
+}
+
+#result{
+    border: 2px solid #c1e2b3;
+    background-color: #72ffda;
+    float: left;
+    margin-left: 20px;
+    width: 30%;
+    height: auto;
 }
 
 /*.menuList{*/
