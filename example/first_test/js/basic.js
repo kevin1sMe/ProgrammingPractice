@@ -4,6 +4,11 @@
 
 
 $(document).ready(function(){
+
+    //显示可修改的内容列表
+    showList(funcContext);
+
+    //绑定点击事件
     $(".form-group > button").click(function(){
         //$(this).parent().find(".sublist").addClass("hidden");
         $(".form-group > .sublist").addClass("hidden");
@@ -11,28 +16,37 @@ $(document).ready(function(){
     });
 
     //$(".result").text("怎么就找不到你呢");
+
+
 });
 
-funcList = [
-    {"name":"经验", "id": "exp",  "desc": "填写经验数值", "url":"/cgi-bin/webtool?cmd=2", "input1": "exp"},
-    {"name":"金币", "id": "rmb", "desc": "填写提交数值", "url": "/cgi-bin/webtool?cmd=2", "input1":"rmb"},
-    {"name":"vip经验", "id": "vip_gold", "desc": "填写vip经验数值", "url": "/cgi-bin/webtool?cmd=2", "input1":"vip_exp"},
-    {"name":"铜板", "id": "gold", "desc": "填写要加的铜板数值", "url": "/cgi-bin/webtool?cmd=2", "input1":"copper"},
-    {"name":"体力", "id": "physical", "desc": "体力写在这里啊", "url": "/cgi-bin/webtool?cmd=2", "input1":"physical"},
-];
-
-showList = function(data){
-    var source   = $("#optDetail").html();
-    var template = Handlebars.compile(source);
-    $("#optList").html("");
-    for(x in data){
-        var html = template(data[x]);
-        $("#optList").append(html);
-    }
+var funcContext = {
+    funcList:[
+        {"name": "经验", "id": "exp", "desc": "填写经验数值", "url": "/cgi-bin/webtool?cmd=2", "input1": "exp"},
+        {"name": "金币", "id": "rmb", "desc": "填写提交数值", "url": "/cgi-bin/webtool?cmd=2", "input1": "rmb"},
+        {"name": "vip经验", "id": "vip_gold", "desc": "填写vip经验数值", "url": "/cgi-bin/webtool?cmd=2", "input1": "vip_exp"},
+        {"name": "铜板", "id": "gold", "desc": "填写要加的铜板数值", "url": "/cgi-bin/webtool?cmd=2", "input1": "copper"},
+        {"name": "体力", "id": "physical", "desc": "体力写在这里啊", "url": "/cgi-bin/webtool?cmd=2", "input1": "physical"},
+    ]
 };
 
-//显示可修改的内容列表
-showList(funcList);
+showList = function(data){
+    //使用handlerbar的Block语法来自动生成重复行
+    //var source   = $("#optDetail").html();
+    //var template = Handlebars.compile(source);
+    //$("#optList").html("");
+    //for(x in data){
+    //    var html = template(data[x]);
+    //    $("#optList").append(html);
+    //}
+
+    var source   = $("#optDetail").html();
+    var template = Handlebars.compile(source);
+    var html = template(data);
+    console.log("html" + html);
+    $("#optList").html(html);
+};
+
 
 findParamName = function(id, param){
     for(x in funcList) {

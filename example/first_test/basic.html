@@ -7,9 +7,11 @@
     <script type="text/javascript" src="js/handlebars-v3.0.1.js"></script>
 </head>
 <body>
-<div class="col-md-4" id="optList">
 
-    <script id="optDetail" type="text/x-handlebars-template">
+
+<div id="optList" class="col-md-4">
+<script id="optDetail" type="text/x-handlebars-template">
+    {{#funcList}}
         <div class="form-group">
         <button type="button" class="btn btn-primary btn-lg btn-block"> {{name}}</button>
         <div class="sublist hidden" >
@@ -19,11 +21,9 @@
             <p class="resultP hidden">这里是结果</p>
         </div>
     </div>
-    </script>
-
-
+    {{/funcList}}
+</script>
 </div>
-
 
 <script type="text/javascript" src="js/jquery-1.11.2.min.js"></script>
 <script type="text/javascript" src="bootstrap-3.3.4/js/bootstrap.min.js"></script>

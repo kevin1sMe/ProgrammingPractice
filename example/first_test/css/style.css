@@ -96,6 +96,11 @@ body{
     word-break: break-all;
 }
 
+/*.sublist{*/
+    /*text-align: center;*/
+    /*margin: auto;*/
+/*}*/
+
 /*.menuList{*/
     /*border-bottom: 1px solid #000000;*/
 
@@ -117,4 +122,14 @@ body{
     display: inline-block;
     float:left;
     background-color: #ff232f;
+
+}
+
+.funcLabel{
+    float: left;
+}
+
+.funcInput{
+    float: left;
+    width: 50%;
 }
