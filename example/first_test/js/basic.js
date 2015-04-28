@@ -77,7 +77,7 @@ showList = function(data){
     var source   = $("#optDetail").html();
     var template = Handlebars.compile(source);
     var html = template(data);
-    console.log("html" + html);
+    //console.log("html" + html);
     $("#optList").html(html);
 };
 
@@ -94,22 +94,29 @@ findParamName = function(id, param){
 registerSumbit = function() {
 //注册点击提交的事件
     $(".funcBtn").click(function () {
-        var input = $(this).parent().find("input").first();
-        console.log("vaule:" + input.val());
+        //获取cgi名称
         var cgi = $(this).parent().find("label").first().data("url");
         console.log("cgi:" + cgi)
-        var paramName = findParamName(input.attr("id"), "input1");
-        console.log(paramName);
-        if (typeof paramName != "undefined") {
-            cgi += "&" + paramName + "=" + input.val();
+
+        //组装cgi参数
+        var $inputList = $(this).parent().find("input");
+        console.dir("inputList:" + $inputList + "len:" + $inputList.length);
+
+        //使用each会把上面inputList对象中的其它杂七杂八的都输出，据说只能自己for i=0..len
+        //$.each($inputList, function(i, val){
+        //    console.log("i:" + i + " name:" + val.name);
+        //});
+        var len = $inputList.length;
+        for(var i=0;  i < len; ++i)
+        {
+            var $input = $inputList.eq(i);
+            console.log("id:" + $input.attr("id") + " value:" + $input.val());
+            cgi += "&" + $input.attr("id") + "=" + $input.val();
         }
-        else {
-            console.log("not found paramName：" + "input1");
-        }
-        console.log(cgi);
+
+        console.log("cgi:" + cgi)
 
         //获得父页面中选择的玩家的信息
-//        var player = window.parent.$(".main_select");
         var player = window.parent.$(":selected");
         if (typeof player == "undefined") {
             console.log("parent main_select not found");
@@ -125,27 +132,11 @@ registerSumbit = function() {
         $.get(cgi, function (data) {
         }).success(function (data) {
             console.log("req succ, rsp:" + data)
-            //var result_p =  $(this).parent().find("#result").first();
-            //result_p.text(data);
-            //result_p.removeClass("hidden");
             window.parent.$("#result").text(data.toString());
         }).error(function (data, status) {
             console.log("req failed, status:" + status + " data:" + data);
-
-            //data="testt.......";
-            //result_p.removeClass("hidden");
-
-            //console.dir("this:" + $(this).parent());
-            //var result_p =  $(this).parent().find(".result");
-            //result_p.text(".....q");
-
-            //console.dir("next:" + $(this).parent());
-            //$(this).next("p").text("this is next");
-            //window.parent.$("#result").text(data.toString());
             window.parent.$("#result").text("这里展示结果。");
         });
-
-        //$("p").text("怎么就找不到你呢");
 
     });
 }
