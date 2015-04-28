@@ -15,7 +15,7 @@
         <div class="form-group">
         <button type="button" class="btn btn-primary btn-lg btn-block"> {{name}}</button>
         <div class="sublist hidden" >
-            <label for="{{id}}" class="funcLabel" data-url="{{url}}" > {{name}} </label>
+            <label for="{{id}}" class="funcLabel" data-url="{{url}}" data-need_all_params="{{need_all_params}}" > {{name}} </label>
             {{!-- <input id="{{id}}" type="text" class="form-control funcInput" placeholder="{{desc}}" data-url="{{url}}"> --}}
             {{#each inputList}}
                 <input id="{{this.name}}" type="text" class="form-control funcInput" placeholder="{{this.desc}}">

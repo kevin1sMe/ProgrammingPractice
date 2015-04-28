@@ -54,7 +54,7 @@ var funcContext = {
             ]
         },
 
-        {"name": "我是测试条", "id": "test", "url": "/cgi-bin/webtool?cmd=2",
+        {"name": "我是测试条", "id": "test", "url": "/cgi-bin/webtool?cmd=2", "need_all_params": true,
             "inputList": [
                 {"name": "testinput1", "desc": "testinput1"},
                 {"name": "testinput2", "desc": "testinput2"},
@@ -94,12 +94,15 @@ findParamName = function(id, param){
 registerSumbit = function() {
 //注册点击提交的事件
     $(".funcBtn").click(function () {
+        var $parent = $(this).parent();
         //获取cgi名称
-        var cgi = $(this).parent().find("label").first().data("url");
+        var $label = $parent.find("label:first");
+        //var cgi = $parent.find("label").first().data("url");
+        var cgi = $label.data("url");
         console.log("cgi:" + cgi)
 
         //组装cgi参数
-        var $inputList = $(this).parent().find("input");
+        var $inputList = $parent.find("input");
         console.dir("inputList:" + $inputList + "len:" + $inputList.length);
 
         //使用each会把上面inputList对象中的其它杂七杂八的都输出，据说只能自己for i=0..len
@@ -107,11 +110,22 @@ registerSumbit = function() {
         //    console.log("i:" + i + " name:" + val.name);
         //});
         var len = $inputList.length;
+        var all_params = "";
         for(var i=0;  i < len; ++i)
         {
             var $input = $inputList.eq(i);
             console.log("id:" + $input.attr("id") + " value:" + $input.val());
             cgi += "&" + $input.attr("id") + "=" + $input.val();
+
+            all_params += $input.attr("id") + " ";
+        }
+
+        //某些cgi需要输入all_params
+        var need_all_params = $label.data("need_all_params");
+        console.log("need_all_params:" + need_all_params);
+        if(need_all_params)
+        {
+            cgi +=  "&all_params=" + all_params;
         }
 
         console.log("cgi:" + cgi)
