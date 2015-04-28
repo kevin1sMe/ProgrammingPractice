@@ -25,15 +25,12 @@ showPlayer = function(data){
 
 var funcLists = [
     {name:"基本信息", url:"basic.html"},
-    {name:"忍者",    url:"404.html"},
-    {name:"背包",    url:""},
+    {name:"修改道具", url:"add.html"},
+    {name:"商店相关", url:"shop.html"},
+    {name:"关卡相关", url:"stage.html"},
 ];
 
 $(document).ready(function(){
-    $(".menu > li").click(function(){
-        var iframe = $("iframe");
-        $("iframe").attr("src",$(this).attr("url"));
-    });
 
     var PlayerLists="";
 
@@ -56,8 +53,11 @@ $(document).ready(function(){
         showPlayer(playerLists);
     });
 
-
+    //显示左边栏菜单
     showMenu(funcLists);
+
+    //注册左边栏菜单点击事件
+    registerMenu();
 
 });
 
@@ -73,3 +73,14 @@ showMenu = function(data){
         $(".menu").append(html);
     }
 };
+
+
+//注册menu的点击事件
+registerMenu = function(){
+    $(".menu > li").click(function(){
+        var $iframe = $("iframe");
+        console.log("click " + $(this).data("url"));
+        $iframe.attr("src",$(this).data("url"));
+    });
+
+}
