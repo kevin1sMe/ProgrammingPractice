@@ -8,15 +8,18 @@ $(document).ready(function(){
     //显示可修改的内容列表
     showList(funcContext);
 
+    //注册当输入框有东西时，提交按钮亮起事件
+    showSubmitWhenInputSomething($(this));
+
     //绑定点击事件
     $(".form-group > button").click(function(){
         //$(this).parent().find(".sublist").addClass("hidden");
         $(".form-group > .sublist").addClass("hidden");
+        $(".form-group > #result").addClass("hidden");
         $(this).next(".sublist").toggleClass("hidden");
-    });
 
-    //注册当输入框有东西时，提交按钮亮起事件
-    showSubmitWhenInputSomething();
+        showSubmit($(this).next(".sublist"));
+    });
 
     //注册点击提交事件
     registerSumbit();
@@ -174,22 +177,35 @@ registerSumbit = function() {
         }).error(function (data, status) {
             var errmsg = "req failed, status:" + data.status ;
             console.log("req failed, status:" + status + " data:" + data.status);
-            window.parent.$("#result").text(errmsg);
+            //window.parent.$("#result").text(errmsg);
+            var $result = $parent.parent().find("#result:first");
+            $result.text(errmsg);
+            $result.removeClass("hidden");
         });
 
     });
 }
 
-//input中有输入时，才使提交亮起
+//初始化submit状态
+showSubmit = function(parent) {
+    var $parent = parent;
+    var $inputList = $parent.find("input");
+    var any_not_finish = false;
+    var len = $inputList.length;
+    console.log("len:" + len);
+    for(var i=0; i < len; ++i) {
+        if($inputList.eq(i).val() == "") {
+            any_not_finish = true;
+            break;
+        }
+    }
+
+    $parent.find("button:first").attr("disabled", any_not_finish);
+}
+
+//所有的input中有输入时，才使提交亮起
 showSubmitWhenInputSomething = function() {
     $("input").keyup(function () {
-//        console.log("input value is " + $(this).first().val());
-        //FIXME 当所有的都有输入时才亮起来
-        if ($(this).val() == "") {
-            $(this).parent().find("button").first().attr("disabled", true);
-        }
-        else {
-            $(this).parent().find("button").first().attr("disabled", false);
-        }
+        showSubmit($(this).parent())
     });
 }
