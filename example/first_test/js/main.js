@@ -23,13 +23,6 @@ showPlayer = function(data){
 };
 
 
-var funcLists = [
-    {name:"基本信息", url:"basic.html"},
-    {name:"修改道具", url:"add.html"},
-    {name:"商店相关", url:"shop.html"},
-    {name:"关卡相关", url:"stage.html"},
-];
-
 $(document).ready(function(){
 
     var PlayerLists="";
@@ -59,6 +52,8 @@ $(document).ready(function(){
     //注册左边栏菜单点击事件
     registerMenu();
 
+    //显示当时时间
+    writeNowTime();
 });
 
 showMenu = function(data){
@@ -84,3 +79,5 @@ registerMenu = function(){
     });
 
 }
+
+

@@ -123,3 +123,42 @@ showSubmitWhenInputSomething = function() {
         showSubmit($(this).parent())
     });
 }
+
+//当前时间
+function writeNowTime(){
+    console.log("writeNowTime");
+    var now= new Date();//获取当前时间
+    var year=now.getFullYear();//年
+    var month=now.getMonth()+1;//月
+    var date=now.getDate();//日
+    var day = now.getDay();//星期
+    var hour=now.getHours()//时
+    //判断今天是星期几
+    if(day==0) day = "星期日";
+    if(day==1) day = "星期一";
+    if(day==2) day = "星期二";
+    if(day==3) day = "星期三";
+    if(day==4) day = "星期四";
+    if(day==5) day = "星期五";
+    if(day==6) day = "星期六";
+    //问候
+    if(hour>0&&hour<=6){
+        $("#hello").html("午夜好");
+    }else if(hour>6&&hour<=9){
+        $("#hello").html("早上好");
+    }else if(hour>9&&hour<=11){
+        $("#hello").html("上午好");
+    }else if(hour>11&&hour<=14){
+        $("#hello").html("中午好");
+    }else if(hour>14&&hour<=18){
+        $("#hello").html("下午好");
+    }else{
+        $("#hello").html("晚上好");
+    }
+
+    //FIXME 为什么html中有个，没展示出来？
+    //时间
+    $("#date").html("，今天是"+year+"年"+month+"月"+date+"日 "+day);
+    console.log("今天是"+year+"年"+month+"月"+date+"日 "+day);
+}
+

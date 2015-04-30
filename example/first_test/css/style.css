@@ -133,3 +133,17 @@ body{
     float: left;
     width: 50%;
 }
+
+#tips{
+    margin-left: 40%;
+}
+
+#hello{
+    float:left;
+    text-align: center;
+}
+
+#date{
+    float:left;
+    text-align: center;
+}
