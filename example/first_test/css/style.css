@@ -147,3 +147,9 @@ body{
     float:left;
     text-align: center;
 }
+
+#loading{
+    position: absolute;
+    margin-top: 0px;
+    margin-left: 200px;
+}

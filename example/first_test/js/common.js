@@ -85,10 +85,17 @@ registerSumbit = function() {
 
         //去请求cgi
         $.get(cgi, function (data) {
-        }).success(function (data) {
+
+        })
+            .always(function(){
+            window.parent.$("#loading").show();
+        })
+            .success(function (data) {
+            window.parent.$("#loading").hide();
             console.log("req succ, rsp:" + data)
             window.parent.$("#result").text(data.toString());
         }).error(function (data, status) {
+            window.parent.$("#loading").hide();
             var errmsg = "req failed, status:" + data.status ;
             console.log("req failed, status:" + status + " data:" + data.status);
             //window.parent.$("#result").text(errmsg);
