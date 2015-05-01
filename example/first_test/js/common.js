@@ -169,3 +169,14 @@ function writeNowTime(){
     console.log("今天是"+year+"年"+month+"月"+date+"日 "+day);
 }
 
+//FIXME
+//iframe高度自适应
+function setIframeHeight(iframe) {
+    if (iframe) {
+        var iframeWin = iframe.contentWindow || iframe.contentDocument.parentWindow;
+        if (iframeWin.document.body) {
+            iframe.height = iframeWin.document.documentElement.scrollHeight || iframeWin.document.body.scrollHeight;
+        }
+    }
+};
+

@@ -69,16 +69,17 @@ body{
 }
 
 #right-side{
-    /*float: left;*/
-    height: 80%;
-    margin-left: 180px;
-
+    float:left;
+    width:80%;
+    min-height: 800px;
+    margin-left: 10px;
 }
 .my_iframe{
     border:  0px solid ;
-    width: 50%;
-    height: 600px;
+    width: 60%;
+    height: 800px;
     float: left;
+    border:1px solid #000;
 }
 
 

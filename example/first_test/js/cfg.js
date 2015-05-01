@@ -63,13 +63,13 @@ var cfgBasicJson = {
             ]
         },
         //我只是一个示例
-        //{"name": "我是测试条", "id": "test", "url": "/cgi-bin/webtool?cmd=2", "need_all_params": true,
-        //    "inputList": [
-        //        {"name": "testinput1", "desc": "testinput1"},
-        //        {"name": "testinput2", "desc": "testinput2"},
-        //        {"name": "testinput3", "desc": "testinput3"}
-        //    ]
-        //},
+        {"name": "我是测试条", "id": "test", "url": "/cgi-bin/webtool?cmd=2", "need_all_params": true,
+            "inputList": [
+                {"name": "testinput1", "desc": "testinput1"},
+                {"name": "testinput2", "desc": "testinput2"},
+                {"name": "testinput3", "desc": "testinput3"}
+            ]
+        },
     ]
 };
 
