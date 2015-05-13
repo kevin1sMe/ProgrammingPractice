@@ -6,10 +6,10 @@
 //绑定点击事件
 registerButton = function(){
     $(".form-group > button").click(function(){
-        //$(this).parent().find(".sublist").addClass("hidden");
-        $(".form-group > .sublist").addClass("hidden");
+        var nextSublist = $(this).next(".sublist");
+        $(".form-group > .sublist").not(nextSublist).addClass("hidden"); //使用not过滤器，跳过正在操作的按钮的设置，使它也可以有toggle效果
         $(".form-group > #result").addClass("hidden");
-        $(this).next(".sublist").toggleClass("hidden");
+        nextSublist.toggleClass("hidden");
 
         showSubmit($(this).next(".sublist"));
     });
