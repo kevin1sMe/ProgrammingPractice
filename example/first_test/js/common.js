@@ -2,6 +2,7 @@
  * Created by kevin on 2015/4/29.
  */
 
+
 //绑定点击事件
 registerButton = function(){
     $(".form-group > button").click(function(){

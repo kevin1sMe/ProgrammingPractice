@@ -1,10 +1,10 @@
 
 
 var funcLists = [
-    {name:"基本信息", url:"basic.html"},
-    {name:"修改道具", url:"add.html"},
-    {name:"商店相关", url:"shop.html"},
-    {name:"关卡相关", url:"stage.html"},
+    {name:"基本信息", url:"basic.html?cfg=cfgBasicJson"},
+    {name:"修改道具", url:"add.html?cfg=cfgAddJson"},
+    {name:"商店相关", url:"shop.html?cfg=cfgShopJson"},
+    {name:"关卡相关", url:"stage.html?cfg=cfgStageJson"},
 ];
 
 //基本信息页
