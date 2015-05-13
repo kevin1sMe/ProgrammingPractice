@@ -1,12 +1,18 @@
 
 
+//var funcLists = [
+//    {name:"基本信息", url:"basic.html?cfg=cfgBasicJson"},
+//    {name:"修改道具", url:"add.html?cfg=cfgAddJson"},
+//    {name:"商店相关", url:"shop.html?cfg=cfgShopJson"},
+//    {name:"关卡相关", url:"stage.html?cfg=cfgStageJson"},
+//];
+
 var funcLists = [
     {name:"基本信息", url:"basic.html?cfg=cfgBasicJson"},
-    {name:"修改道具", url:"add.html?cfg=cfgAddJson"},
-    {name:"商店相关", url:"shop.html?cfg=cfgShopJson"},
-    {name:"关卡相关", url:"stage.html?cfg=cfgStageJson"},
+    {name:"修改道具", url:"basic.html?cfg=cfgAddJson"},
+    {name:"商店相关", url:"basic.html?cfg=cfgShopJson"},
+    {name:"关卡相关", url:"basic.html?cfg=cfgStageJson"},
 ];
-
 //基本信息页
 var cfgBasicJson = {
     funcList:[
