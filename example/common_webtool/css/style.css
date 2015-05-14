@@ -11,7 +11,7 @@ body{
     position: relative;
     width: 100%;
     min-width: 960px;
-    height: 180px;
+    height: 150px;
     background: url(http://ossweb-img.qq.com/images/hyrz/web201503/page_top.jpg) 50% 0 no-repeat
 }
 
@@ -63,11 +63,16 @@ body{
 
 .menu li{
     height: 50px;
-    margin-top: 10px;
     font-weight: bold;
     font-size: 30px;
     border-bottom: 1px solid #419641;
 }
+
+.menuItem {
+    margin-top: 10px;
+    display: inline-block;
+}
+.menu li:hover{background: #4196ff; }
 
 #right-side{
     float:left;
