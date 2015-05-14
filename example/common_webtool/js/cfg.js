@@ -1,8 +1,8 @@
 var funcLists = [
-    {name:"基本信息", url:"basic.html?cfg=cfgBasicJson"},
-    {name:"修改道具", url:"basic.html?cfg=cfgAddJson"},
-    {name:"商店相关", url:"basic.html?cfg=cfgShopJson"},
-    {name:"关卡相关", url:"basic.html?cfg=cfgStageJson"},
+    {name:"基本信息", url:"basic.html?cfg=cfgBasicJson", icon: "fa-user-plus fa-lg"},
+    {name:"修改道具", url:"basic.html?cfg=cfgAddJson", icon:"fa-briefcase fa-lg"},
+    {name:"商店相关", url:"basic.html?cfg=cfgShopJson", icon:"fa-shopping-cart fa-lg"},
+    {name:"关卡相关", url:"basic.html?cfg=cfgStageJson", icon:"fa-unlock fa-lg"},
 ];
 //基本信息页
 var cfgBasicJson = {

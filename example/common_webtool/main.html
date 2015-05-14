@@ -5,6 +5,7 @@
     <title></title>
     <link href="css/style.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="js/handlebars-v3.0.1.js"></script>
+    <link rel="stylesheet" href="font-awesome-4.3.0/css/font-awesome.min.css">
     <!--<link href="bootstrap-3.3.4/css/bootstrap.css" rel="stylesheet" type="text/css" />-->
 </head>
 <body>
@@ -16,7 +17,6 @@
         </div>
     </div>
 </header>
-<!--<option class="{{op_name}}" player_id="{{player_id}}"> {{name}} </option>-->
 <div id="status">
     <span class="online_tips"> 当前玩家总数：0 </span>
     <select class="main_select">
@@ -30,6 +30,7 @@
         <ul class="menu" data-role="listview">
             <script id="menu_list_template" type="text/x-handlebars-template">
                 <li class="menuList" data-url="{{url}}">
+                    <i class="fa {{icon}}"></i>
                     {{name}}
                 </li>
             </script>
