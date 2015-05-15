@@ -73,6 +73,10 @@ body{
     margin-top: 10px;
     display: inline-block;
 }
+
+.menuSelect{
+    background: #4196ff;
+}
 .menu li:hover{background: #4196ff; }
 
 #right-side{

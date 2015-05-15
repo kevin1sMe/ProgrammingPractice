@@ -67,12 +67,15 @@ showMenu = function(data){
         console.log("html" + html);
         $(".menu").append(html);
     }
+    $(".menu > li:first").addClass("menuSelect");
 };
 
 
 //注册menu的点击事件
 registerMenu = function(){
     $(".menu > li").click(function(){
+        $(".menu > li").removeClass("menuSelect");
+        $(this).addClass("menuSelect");
         var $iframe = $("iframe");
         console.log("click " + $(this).data("url"));
         $iframe.attr("src",$(this).data("url"));
