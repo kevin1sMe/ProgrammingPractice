@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title> 通用的子页面 </title>
     <link href="bootstrap-3.3.4/css/bootstrap.css" rel="stylesheet" type="text/css" />
+    <link href="css/style.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="js/handlebars-v3.0.1.js"></script>
 </head>
 <body>
@@ -23,8 +24,8 @@
             {{/each}}
             <button type="submit" class="funcBtn btn btn-info" disabled="true"> 提交</button>
         </div>
-        <div id="result">
-            <p class="hidden">这里是结果</p>
+        <div id="result" class="hidden">
+            <p>这里是结果</p>
         </div>
     </div>
     {{/funcList}}
