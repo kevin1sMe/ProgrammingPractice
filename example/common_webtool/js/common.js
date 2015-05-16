@@ -92,20 +92,31 @@ registerSumbit = function() {
             window.parent.$("#loading").show();
         })
             .success(function (data) {
-            window.parent.$("#loading").hide();
-            console.log("req succ, rsp:" + data)
-            window.parent.$("#result").text(data.toString());
-        }).error(function (data, status) {
-            window.parent.$("#loading").hide();
-            var errmsg = "req failed, status:" + data.status ;
-            console.log("req failed, status:" + status + " data:" + data.status);
-            //window.parent.$("#result").text(errmsg);
-            var $result = $parent.parent().find("#result:first");
-            $result.text(errmsg);
-            $result.removeClass("hidden");
-        });
+                console.log("req succ, rsp:" + data)
+                showResult($parent, data.toString());
+            }).error(function (data, status) {
+                var $here =$(this);
+                console.dir("this:" + $here);
+                console.dir("parent:" + $parent);
+                var errmsg = "req failed, status:" + data.status
+                    +"test11111111111111111111111"
+                    +"test11111111111111111111111"
+                    +"test11111111111111111111111"
+                    +"test11111111111111111111111";
+                console.log("req failed, status:" + status + " data:" + data.status);
+                showResult($parent, errmsg);
+            });
 
     });
+}
+
+showResult = function(btn, str){
+    window.parent.$("#loading").hide();
+    var $div = btn.parent();
+    var $result =  $div.find("p:first");
+    console.dir("result:" + $result);
+    $result.text(str);
+    $result.removeClass("hidden");
 }
 
 //初始化submit状态
