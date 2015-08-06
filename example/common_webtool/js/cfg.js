@@ -3,6 +3,7 @@ var funcLists = [
     {name:"修改道具", url:"basic.html?cfg=cfgAddJson", icon:"fa-briefcase fa-lg"},
     {name:"商店相关", url:"basic.html?cfg=cfgShopJson", icon:"fa-shopping-cart fa-lg"},
     {name:"关卡相关", url:"basic.html?cfg=cfgStageJson", icon:"fa-unlock fa-lg"},
+    {name:"导表更新", url:"export.html", icon:"fa-server fa-lg"},
 ];
 //基本信息页
 var cfgBasicJson = {

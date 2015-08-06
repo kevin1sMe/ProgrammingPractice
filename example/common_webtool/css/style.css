@@ -16,6 +16,30 @@ body{
     background: url(http://ossweb-img.qq.com/images/hyrz/web201503/page_top.jpg) 50% 0 no-repeat
 }
 
+.wrap{
+    width: 100%;
+    clear: both;
+    /*margin-top: 20px;*/
+    padding-top: 20px;
+    height: 70%;
+    cursor: pointer;
+}
+
+#left-side{
+    width: 250px;
+    float: left;
+    background: #60bdff;
+    height: 80%;
+    cursor: pointer;
+}
+
+#right-side{
+    float:left;
+    width:80%;
+    min-height: 800px;
+    margin-left: 10px;
+}
+
 .title{
     padding-top: 80px;
     text-align: left;
@@ -38,23 +62,6 @@ body{
     float: left;
 }
 
-.wrap{
-    width: 100%;
-    clear: both;
-    /*margin-top: 20px;*/
-    padding-top: 20px;
-    height: 70%;
-    cursor: pointer;
-}
-
-
-#left-side{
-    width: 250px;
-    float: left;
-    background: #60bdff;
-    height: 80%;
-    cursor: pointer;
-}
 
 .menu{
     list-style: none;
@@ -79,12 +86,6 @@ body{
 }
 .menu li:hover{background: #4196ff; }
 
-#right-side{
-    float:left;
-    width:80%;
-    min-height: 800px;
-    margin-left: 10px;
-}
 .my_iframe{
     border:  0px solid ;
     width: 60%;
@@ -168,4 +169,9 @@ body{
     position: absolute;
     margin-top: 0px;
     margin-left: 200px;
+}
+
+#branchesList{
+    text-align: left;
+    float: left;
 }

@@ -28,7 +28,6 @@ showList = function(data){
     var source   = $("#optDetail").html();
     var template = Handlebars.compile(source);
     var html = template(data);
-    //console.log("html" + html);
     $("#optList").html(html);
 };
 
@@ -95,14 +94,7 @@ registerSumbit = function() {
                 console.log("req succ, rsp:" + data)
                 showResult($parent, data.toString());
             }).error(function (data, status) {
-                var $here =$(this);
-                console.dir("this:" + $here);
-                console.dir("parent:" + $parent);
-                var errmsg = "req failed, status:" + data.status
-                    +"test11111111111111111111111"
-                    +"test11111111111111111111111"
-                    +"test11111111111111111111111"
-                    +"test11111111111111111111111";
+                var errmsg = "req failed, status:" + data.status;
                 console.log("req failed, status:" + status + " data:" + data.status);
                 showResult($parent, errmsg);
             });
