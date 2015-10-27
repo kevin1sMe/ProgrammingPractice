@@ -24,7 +24,7 @@ func main(){
         checkError(err, conn)
 
         go handleSend(conn)
-        time.Sleep(1 * time.Second)
+        time.Sleep(1 * time.MSecond)
     }
 
     os.Exit(0)
