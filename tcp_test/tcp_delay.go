@@ -97,7 +97,7 @@ func handleSend(s *Status, conn net.Conn, interval int32) {
 		_, err = conn.Read(data)
 		checkError(err, conn)
 		recv_time := time.Now().UnixNano()
-		fmt.Fprintf(os.Stdout, "send:%d recv:%d diff:%d us\n", send_time, recv_time, (recv_time-send_time)/1000)
+		fmt.Fprintf(os.Stdout, "send:%d recv:%d diff:%d ms\n", send_time, recv_time, (recv_time-send_time)/1000000)
 		time.Sleep(time.Duration(interval) * time.Millisecond)
 		send_count += 1
 		if send_count > 100 {
