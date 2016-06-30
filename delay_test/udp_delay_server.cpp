@@ -76,8 +76,7 @@ void dg_echo(int sockfd, struct sockaddr *sockaddr, socklen_t addrlen)
         char* ip_addr = inet_ntoa(((struct sockaddr_in*)sockaddr)->sin_addr);
         //remove \n 
         //msg[strlen(msg) -1] = 0;
-        printf("recv data from(%s:%d): len(%u) data:%s",
-               ip_addr, port,  len, msg);
+        printf("recv data from(%s:%d): len(%u)\n", ip_addr, port, len );
         sendto(sockfd, msg, n, 0, sockaddr, len);
     }
 }

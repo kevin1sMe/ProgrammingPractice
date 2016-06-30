@@ -9,16 +9,9 @@ package main
 
 import (
 	"fmt"
-	//"io/ioutil"
-	//"math/rand"
 	"net"
 	"os"
-	//"strconv"
-	//"sync"
-	//"sync/atomic"
-	"bufio"
-	"bytes"
-	//"time"
+	"time"
 )
 
 func main() {
@@ -52,20 +45,15 @@ func tcpPipe(conn *net.TCPConn) {
 		conn.Close()
 	}()
 
-	reader := bufio.NewReader(conn)
 	for {
-		//message, err := reader.ReadString('\n')
-		//if err != nil {
-		//return
-		//}
-
-		//fmt.Println(string(message))
-		//msg := time.Now().String() + "\n"
-		//b := []byte(msg)
-		var b bytes.Buffer
-		reader.WriteTo(&b)
-		fmt.Fprintf(os.Stderr, "recv data:%v", b)
-		conn.Write(b.Bytes())
+		buff := make([]byte, 512)
+		n, err := conn.Read(buff)
+		if err != nil {
+			time.Sleep(10 * time.Millisecond)
+			continue
+		}
+		fmt.Fprintf(os.Stdout, "recv data len:%d %v\n", n, buff[:n])
+		conn.Write(buff[:n])
 	}
 }
 
