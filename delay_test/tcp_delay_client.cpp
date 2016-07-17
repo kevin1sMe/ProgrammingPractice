@@ -1,9 +1,9 @@
 /*========================================================================
-#   FileName: udp_ntp_client.cpp
+#   FileName: tcp_delay_client.cpp
 #     Author: kevinlin
 #      Email: linjiang1205#qq.com
-#   History:  NTP协议 的客户端，不停的发包，测试网络延迟
-# LastChange: 2016-06-26 15:21:39
+#   History:  tcp test client
+# LastChange: 2016-07-17 22:01:12
 ========================================================================*/
 #include <arpa/inet.h>
 #include <errno.h>
@@ -24,10 +24,13 @@ extern int errno;
 
 #define MAX_LEN 1024
 
-void dg_cli(int sockfd, const sockaddr* pservaddr, socklen_t len, int times, int interval);
 void* send_proc(void*);
 void* recv_proc(void*);
 
+typedef struct tagPkg{
+    int len;
+    uint64_t t1;
+}Pkg;
 
 int sockfd;
 struct sockaddr_in servaddr;
@@ -49,19 +52,24 @@ int main(int argc, char** argv)
     servaddr.sin_port = htons(atoi(argv[2]));
     inet_pton(AF_INET, argv[1], &servaddr.sin_addr);
 
-    sockfd = socket(AF_INET, SOCK_DGRAM, 0);
+    sockfd = socket(AF_INET, SOCK_STREAM, 0);
     if(-1 == sockfd){
         printf("socket create failed:%s\n", strerror(errno));
         return -1;
     }
 
-    int flags = fcntl(sockfd, F_GETFL, 0);
-    if(flags < 0) {
-        printf("fcntl F_GETFL failed:%s", strerror(errno));
-        return -1;
-    }
-    if(fcntl(sockfd, F_SETFL, flags | O_NONBLOCK) < 0) {
-        printf("fcntl F_SETFL failed:%s", strerror(errno));
+    //int flags = fcntl(sockfd, F_GETFL, 0);
+    //if(flags < 0) {
+        //printf("fcntl F_GETFL failed:%s\n", strerror(errno));
+        //return -1;
+    //}
+    //if(fcntl(sockfd, F_SETFL, flags | O_NONBLOCK) < 0) {
+        //printf("fcntl F_SETFL failed:%s\n", strerror(errno));
+        //return -1;
+    //}
+
+    if(-1 == connect(sockfd, (sockaddr*)&servaddr, sizeof(servaddr))) {
+        printf("connect failed, %s\n", strerror(errno));
         return -1;
     }
 
@@ -92,9 +100,9 @@ void* send_proc(void*)
         uint64_t t1 = tv1.tv_sec * 1000000 + tv1.tv_usec;
         memcpy(sendline, &t1, sizeof(t1));
 
-        int s = sendto(sockfd, sendline, sizeof(t1), 0, pservaddr, sizeof(servaddr));
+        int s = write(sockfd, sendline, sizeof(t1));
         if(s == -1){
-            printf("sendto failed:%s\n", strerror(errno));
+            printf("write failed:%s\n", strerror(errno));
             break;
         }
         ++total_send;
@@ -110,28 +118,27 @@ void* recv_proc(void*)
     int count = 0;
     int empty_loop_count = 0;
     while(1){
-        n = recvfrom(sockfd, recvline, MAX_LEN, 0, NULL, NULL);
-        if(n < 0) {
+        n = read(sockfd, recvline, sizeof(recvline));
+        if(n <= 0) {
             //printf("recvfrom err:%s\n", strerror(errno));
             empty_loop_count++;
+            if(empty_loop_count > 100) {
+                empty_loop_count = 0;
+                usleep(2000);
+            }
             continue;
         }
 
-        uint64_t recv_t1  = 0;
-        memcpy(&recv_t1, &recvline[0], sizeof(recv_t1));
-
-        timeval tv4;
-        gettimeofday(&tv4, NULL);
-        uint64_t t4 = tv4.tv_sec * 1000000 + tv4.tv_usec;
-        printf("[%d] = {t1:%llu t4:%llu} delay:%llu ms\n", ++count, recv_t1, t4, (t4- recv_t1) / 1000);
-        ++total_recv;
-
-        if(empty_loop_count > 100)
-        {
-            empty_loop_count = 0;
-            usleep(2000);
+        for(int i=0; i < n; i += sizeof(uint64_t)) {
+            uint64_t recv_t1  = 0;
+            memcpy(&recv_t1, &recvline[i], sizeof(uint64_t));
+            timeval tv4;
+            gettimeofday(&tv4, NULL);
+            uint64_t t4 = tv4.tv_sec * 1000000 + tv4.tv_usec;
+            printf("[%d] = {t1:%llu t4:%llu} delay:%llu ms\n", ++count, recv_t1, t4, (t4- recv_t1) / 1000);
+            ++total_recv;
         }
-    }
+   }
 }
 
 

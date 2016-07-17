@@ -11,8 +11,10 @@ udp_c: udp_delay_client.cpp
 tcp_delay_server: tcp_delay_server.go
 	go build $^
 
-tcp_delay_client: tcp_delay_client.go
-	go build $^
+#tcp_delay_client: tcp_delay_client.go
+#	go build $^
+tcp_delay_client: tcp_delay_client.cpp
+	g++ $^ -o $@
 
 test_udp: udp_s udp_c
 	@echo  "==== udp delay test ========"
@@ -33,7 +35,7 @@ test_tcp: tcp_delay_server tcp_delay_client
 	@echo "start end"
 
 	@echo "start tcp client..."
-	./tcp_delay_client 127.0.0.1:1986 10 100
+	./tcp_delay_client 127.0.0.1 1986 10 100
 	killall -9 tcp_delay_server
 	@echo  "==== tcp delay test end ========"
 
