@@ -1,6 +1,6 @@
 .PHONY:all
 
-all: udp_s udp_c tcp_delay_server tcp_delay_client test_udp test_tcp
+all: udp_s udp_c tcp_delay_server tcp_delay_client rudp_s rudp_c test_udp test_tcp test_rudp
 
 udp_s: udp_delay_server.cpp
 	g++ $^ -o $@
@@ -16,6 +16,13 @@ tcp_delay_server: tcp_delay_server.go
 tcp_delay_client: tcp_delay_client.cpp
 	g++ $^ -o $@
 
+rudp_c: rudp_delay_client.cpp
+	g++ $^ -o $@
+rudp_s: rudp_delay_server.cpp
+	g++ $^ -o $@
+
+
+
 test_udp: udp_s udp_c
 	@echo  "==== udp delay test ========"
 	@echo "start udp server..."
@@ -27,6 +34,19 @@ test_udp: udp_s udp_c
 	killall -9 udp_s
 	@echo  "==== udp delay test end ========"
 	@echo
+
+test_rudp: rudp_s rudp_c
+	@echo  "==== rudp delay test ========"
+	@echo "start rudp server..."
+	./rudp_s&
+	@echo "start end"
+
+	@echo "start rudp client..."
+	./rudp_c 127.0.0.1 1986 10 100 
+	killall -9 rudp_s
+	@echo  "==== rudp delay test end ========"
+	@echo
+
 
 test_tcp: tcp_delay_server tcp_delay_client
 	@echo  "==== tcp delay test ========"
