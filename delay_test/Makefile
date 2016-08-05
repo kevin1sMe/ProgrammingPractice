@@ -17,9 +17,9 @@ tcp_delay_client: tcp_delay_client.cpp
 	g++ $^ -o $@
 
 rudp_c: rudp_client.cpp
-	g++ $^ -o $@
+	g++ $^ -pthread -o $@
 rudp_s: rudp_server.cpp
-	g++ $^ -o $@
+	g++ $^ -pthread -o $@
 
 
 

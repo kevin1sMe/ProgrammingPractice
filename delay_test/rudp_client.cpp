@@ -21,12 +21,13 @@
 #include <vector>
 
 
+//#define DEBUG 
+
 extern int errno;
 using namespace std;
 
 #define MAX_LEN 1024
 
-void* product_proc(void*);
 void* send_proc(void*);
 void* recv_proc(void*);
 
@@ -92,8 +93,7 @@ int main(int argc, char** argv) {
     pthread_mutex_init(&lock, NULL);
 
     //发送线程
-    pthread_t send_t, recv_t, product_t;
-    pthread_create(&product_t, NULL, product_proc, NULL);
+    pthread_t send_t, recv_t;
     pthread_create(&send_t, NULL, send_proc, NULL);
     pthread_create(&recv_t, NULL, recv_proc, NULL);
 
@@ -116,20 +116,23 @@ uint64_t now(){
 }
 
 //向队列中写入一些待发送数据 
-void* product_proc(void*) {
-    for(int i=0; i < send_times; ++i){
+void add_data_to_list(int* remain_times) {
+    if(*remain_times > 0){
+        -- *remain_times;
         //加入新数据
         pthread_mutex_lock(&lock);
         {
             data_list.push_back(now());
             ++client_seq;
             ++total_send_pkg;
+#ifdef DEBUG
+            printf("[%d]add new data to list\n", client_seq);
+#endif
         }
         pthread_mutex_unlock(&lock);
-        usleep(interval * 1000);
+    } else{
+        all_data_product = true;
     }
-    all_data_product = true;
-    return NULL;
 }
 
 
@@ -139,6 +142,9 @@ void* send_proc(void*) {
     char sendline[MAX_LEN] = {0};
 
     while(true) {
+        //加入数据 
+        add_data_to_list(&send_times);
+
         pthread_mutex_lock(&lock);
         if(all_data_product && data_list.empty()) {
             printf("all data send and recv succ, stop send thread.\n");
@@ -154,7 +160,6 @@ void* send_proc(void*) {
         for(int idx=0; idx < len; ++idx ){
             memcpy(pkg->data + idx, &data_list[idx], sizeof(data_list[0]) * len);
         }
-        pthread_mutex_unlock(&lock);
 
         int total_len = sizeof(UdpPkg) + sizeof(pkg->data[0]) * len;
 
@@ -164,8 +169,11 @@ void* send_proc(void*) {
             break;
         }
         ++total_send_times;
+        pthread_mutex_unlock(&lock);
+#ifdef DEBUG
         printf("[%d] send data to server {seq:%d ack:%d len:%d}\n",
                 total_send_times, client_seq, server_seq, len);
+#endif
         usleep(interval * 1000);
     }
     return NULL;
@@ -183,6 +191,7 @@ void* recv_proc(void*) {
             continue;
         }
 
+        pthread_mutex_lock(&lock);
         ++total_recv_times;
 
         if(n < sizeof(UdpPkg)) {
@@ -200,14 +209,15 @@ void* recv_proc(void*) {
         int recv_ack = ntohl(recv_data->ack);
         int recv_len = ntohl(recv_data->len);
  
+#ifdef DEBUG
         printf("recv from server recv:{seq:%d ack:%d len:%d}, old:{server_seq:%d, server_ack:%d} client:{seq:%d} \n", 
                recv_seq, recv_ack, recv_len,  server_seq, server_ack, client_seq);
+#endif
         server_seq = recv_seq;
         server_ack = recv_ack;
         //计算哪一些被确认，剩下的留在队列中
         int unack_count = client_seq - server_ack;
 
-        pthread_mutex_lock(&lock);
         int drop_count = data_list.size() - unack_count;
         if(drop_count < 0) {
             printf("drop count less than 0, data_list_size:%ld unack_count:%d\n", data_list.size(), unack_count);
