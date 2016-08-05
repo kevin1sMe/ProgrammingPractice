@@ -29,7 +29,9 @@ void loop(int sockfd, struct sockaddr *sockaddr, socklen_t addrlen);
 
 int seq = 0;
 int ack = 0;
-int last_ack_send = 0;
+int client_seq = 0;
+int client_ack = 0;
+int send_times = 0;
 
 int sockfd;
 struct sockaddr_in cliaddr;
@@ -41,6 +43,12 @@ typedef struct tagUdpPkg {
     uint64_t data[0];
 }UdpPkg;
 
+void reset() {
+    seq = 100;
+    ack = 0;
+    client_seq = 0;
+    client_ack = 0;
+}
 
 int main(int argc, char** argv) {
     if(argc < 2) {
@@ -116,28 +124,28 @@ void loop(int sockfd, struct sockaddr *sockaddr, socklen_t addrlen) {
         }
 
         if(memcmp(&cliaddr, &client_addr, sizeof(client_addr)) != 0){
-            seq = 0;
-            ack = 0;
-            last_ack_send = 0;
+            reset();
             printf("new session, reset seq/ack\n");
             cliaddr = client_addr;
         }
 
-
         UdpPkg* recv_data = (UdpPkg*)msg;
         int recv_seq = ntohl(recv_data->seq);
    
-        if(recv_seq < ack) {
-            printf("recv expire data size:%d, data:{%s} drop it\n", n, binary_dump(msg, n));
+        if(recv_seq < client_seq) {
+            printf("recv expire data{recv_seq:%d client_seq:%d} size:%d, data:{%s} drop it\n", 
+                    recv_seq, client_seq, n, binary_dump(msg, n));
             continue;
         }
 
         int recv_ack = ntohl(recv_data->ack);
         int recv_len = ntohl(recv_data->len);
 
-        printf("cur ack:%d, recv data (seq:%d ack:%d len:%d data:%s)\n", 
-                ack, recv_seq, recv_ack, recv_len, binary_dump(msg, n));
-        ack = recv_seq; //客户端过来的seq, 保存在服务器下发的ack中
+        printf("recv client data (recv_seq:%d client_seq:%d ack:%d len:%d data:%s)\n", 
+                recv_seq, client_seq, recv_ack, recv_len, binary_dump(msg, n));
+        client_seq = recv_seq;
+        client_ack = recv_ack;
+        send_times = 0;
     }
 }
 
@@ -147,19 +155,18 @@ void* send_proc(void*) {
     int n, len;
     char sendline[MAX_LEN] = {0};
     for(;;){
-        if(last_ack_send < ack){
-            ++seq;
+        if(client_ack < client_seq && send_times < 10){
+            ++send_times; //发10次最多
             //组建发送包
             UdpPkg* pkg = (UdpPkg*)sendline;
-            pkg->seq = htonl(seq);
-            pkg->ack = htonl(ack);
+            pkg->seq = htonl(client_seq);
+            pkg->ack = htonl(client_seq);
             pkg->len = htonl(0);
 
             int total_len = sizeof(UdpPkg);
             sendto(sockfd, sendline, total_len, 0, (struct sockaddr*)&cliaddr, sizeof(cliaddr));
-            last_ack_send = ack;
-            printf("sendback seq:%d ack:%d len:%d last_ack_send:%d\n", seq, ack, 0, last_ack_send);
-            //usleep(10 * 1000);
+            printf("send to client, client_seq:%d client_ack:%d\n", client_seq, client_ack);
+            usleep(4 * 1000);
         }
         else{
             usleep(10 * 1000);
