@@ -46,16 +46,14 @@ vector<uint64_t> data_list; //这里缓存着要发送的数据列表，数据�
 
 static pthread_mutex_t lock;
 
-typedef struct tagUdpPkg
-{
+typedef struct tagUdpPkg {
     int32_t seq;
     int32_t ack;
     int32_t len;
     uint64_t data[0];
 }UdpPkg;
 
-int main(int argc, char** argv)
-{
+int main(int argc, char** argv) {
     if(argc != 5){
         printf("usage: %s ipaddr port send_times send_interval(ms)\n", argv[0]);
         return -1;
@@ -94,14 +92,14 @@ int main(int argc, char** argv)
 
     pthread_join(send_t, NULL);
     sleep(2); //wait second for recv thread
-    printf("\nTotal send:%d\nTotal recv:%d\nDropped:%d rate:%.2f%%\n", total_send, total_recv, total_send - total_recv, (total_send - total_recv) * 100.0 / total_send);
+    printf("\nTotal send:%d\nTotal recv:%d\nDropped:%d rate:%.2f%%\n", 
+            total_send, total_recv, total_send - total_recv, (total_send - total_recv) * 100.0 / total_send);
 
     pthread_mutex_destroy(&lock);
     return 0;
 }
 
-void* send_proc(void*)
-{
+void* send_proc(void*) {
     int n, len;
     const sockaddr* pservaddr = (sockaddr*)&servaddr;
     char sendline[MAX_LEN] = {0};
@@ -142,8 +140,7 @@ void* send_proc(void*)
     return NULL;
 }
 
-void* recv_proc(void*)
-{
+void* recv_proc(void*) {
     int n, len;
     char recvline[MAX_LEN] = {0};
     int count = 0;
@@ -151,7 +148,6 @@ void* recv_proc(void*)
     while(1){
         n = recvfrom(sockfd, recvline, MAX_LEN, 0, NULL, NULL);
         if(n < 0) {
-            //printf("recvfrom err:%s\n", strerror(errno));
             empty_loop_count++;
             continue;
         }

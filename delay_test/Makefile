@@ -16,9 +16,9 @@ tcp_delay_server: tcp_delay_server.go
 tcp_delay_client: tcp_delay_client.cpp
 	g++ $^ -o $@
 
-rudp_c: rudp_delay_client.cpp
+rudp_c: rudp_client.cpp
 	g++ $^ -o $@
-rudp_s: rudp_delay_server.cpp
+rudp_s: rudp_server.cpp
 	g++ $^ -o $@
 
 
@@ -38,7 +38,7 @@ test_udp: udp_s udp_c
 test_rudp: rudp_s rudp_c
 	@echo  "==== rudp delay test ========"
 	@echo "start rudp server..."
-	./rudp_s&
+	./rudp_s 1986 &
 	@echo "start end"
 
 	@echo "start rudp client..."
