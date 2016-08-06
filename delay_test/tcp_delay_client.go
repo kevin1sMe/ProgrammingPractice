@@ -38,7 +38,7 @@ func main() {
 	fmt.Fprintf(os.Stdout, "create tcp link\n")
 
 	for j := 0; j < int(send_count); j++ {
-		fmt.Fprintf(os.Stdout, "==== %d ====\n", j)
+		//fmt.Fprintf(os.Stdout, "==== %d ====\n", j)
 		//go handleSend(&s, conn)
 		handleSend(conn)
 		time.Sleep(time.Duration(send_interval) * time.Millisecond)
@@ -74,7 +74,7 @@ func handleSend(conn net.Conn) {
 
 	send_time = body.T1
 	recv_time := time.Now().UnixNano()
-	fmt.Fprintf(os.Stdout, "send:%d recv:%d diff:%d us\n", send_time, recv_time, (recv_time-send_time)/1000)
+	fmt.Fprintf(os.Stdout, "send:%d recv:%d diff:%d ms\n", send_time, recv_time, (recv_time-send_time)/1000000)
 }
 
 func checkError(err error, conn net.Conn) {

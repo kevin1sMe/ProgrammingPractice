@@ -9,9 +9,10 @@ package main
 
 import (
 	"fmt"
+	//"io"
 	"net"
 	"os"
-	"time"
+	//"time"
 )
 
 func main() {
@@ -39,8 +40,8 @@ func main() {
 }
 
 func tcpPipe(conn *net.TCPConn) {
-	ipStr := conn.RemoteAddr().String()
 	defer func() {
+		ipStr := conn.RemoteAddr().String()
 		fmt.Println("disconnected :" + ipStr)
 		conn.Close()
 	}()
@@ -49,11 +50,14 @@ func tcpPipe(conn *net.TCPConn) {
 		buff := make([]byte, 512)
 		n, err := conn.Read(buff)
 		if err != nil {
-			time.Sleep(10 * time.Millisecond)
-			continue
+			conn.Close()
+			break
 		}
-		fmt.Fprintf(os.Stdout, "recv data len:%d %v\n", n, buff[:n])
-		conn.Write(buff[:n])
+		if n > 0 {
+			fmt.Fprintf(os.Stdout, "recv data len:%d %v\n", n, buff[:n])
+			conn.Write(buff[:n])
+			//io.Copy(conn, conn)
+		}
 	}
 }
 

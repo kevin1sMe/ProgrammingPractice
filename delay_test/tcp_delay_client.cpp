@@ -34,6 +34,7 @@ typedef struct tagPkg{
 
 int sockfd;
 struct sockaddr_in servaddr;
+bool g_stop;
 
 int send_times = 0;
 int interval = 0;
@@ -58,16 +59,6 @@ int main(int argc, char** argv)
         return -1;
     }
 
-    //int flags = fcntl(sockfd, F_GETFL, 0);
-    //if(flags < 0) {
-        //printf("fcntl F_GETFL failed:%s\n", strerror(errno));
-        //return -1;
-    //}
-    //if(fcntl(sockfd, F_SETFL, flags | O_NONBLOCK) < 0) {
-        //printf("fcntl F_SETFL failed:%s\n", strerror(errno));
-        //return -1;
-    //}
-
     if(-1 == connect(sockfd, (sockaddr*)&servaddr, sizeof(servaddr))) {
         printf("connect failed, %s\n", strerror(errno));
         return -1;
@@ -75,17 +66,20 @@ int main(int argc, char** argv)
 
     send_times = atoi(argv[3]);
     interval = atoi(argv[4]);
+    g_stop = false;
 
     //发送线程
     pthread_t send_t, recv_t;
     pthread_create(&send_t, NULL, send_proc, NULL);
     pthread_create(&recv_t, NULL, recv_proc, NULL);
-    //dg_cli(sockfd, (sockaddr*)&servaddr, sizeof(servaddr), atoi(argv[3]), atoi(argv[4]));
 
     pthread_join(send_t, NULL);
-    sleep(2); //wait 10s for recv thread
-    //pthread_join(recv_t, NULL);
-    printf("\nTotal send:%d\nTotal recv:%d\nDropped:%d rate:%.2f%%\n", total_send, total_recv, total_send - total_recv, (total_send - total_recv) * 100.0 / total_send);
+    sleep(2); //wait second for recv thread
+    printf("\nTotal send:%d\nTotal recv:%d\nDropped:%d rate:%.2f%%\n", 
+            total_send, total_recv, total_send - total_recv, (total_send - total_recv) * 100.0 / total_send);
+
+    g_stop = true;
+    close(sockfd);
     return 0;
 }
 
@@ -109,6 +103,7 @@ void* send_proc(void*)
         //printf("send:%d\n", i);
         usleep(interval * 1000);
     }
+    return NULL;
 }
 
 void* recv_proc(void*)
@@ -117,15 +112,10 @@ void* recv_proc(void*)
     char recvline[MAX_LEN] = {0};
     int count = 0;
     int empty_loop_count = 0;
-    while(1){
+    while(!g_stop){
         n = read(sockfd, recvline, sizeof(recvline));
         if(n <= 0) {
-            //printf("recvfrom err:%s\n", strerror(errno));
-            empty_loop_count++;
-            if(empty_loop_count > 100) {
-                empty_loop_count = 0;
-                usleep(2000);
-            }
+            printf("recvfrom err:%s\n", strerror(errno));
             continue;
         }
 
@@ -135,48 +125,10 @@ void* recv_proc(void*)
             timeval tv4;
             gettimeofday(&tv4, NULL);
             uint64_t t4 = tv4.tv_sec * 1000000 + tv4.tv_usec;
-            printf("[%d] = {t1:%llu t4:%llu} delay:%llu ms\n", ++count, recv_t1, t4, (t4- recv_t1) / 1000);
+            printf("[%d] = {t1:%llu t4:%llu} delay:%llu ms\n", ++count, recv_t1/1000, t4/1000, (t4- recv_t1) / 1000);
             ++total_recv;
         }
-   }
+    }
+    return NULL;
 }
 
-
-//void dg_cli(int sockfd, const sockaddr* pservaddr, socklen_t len, int times, int interval)
-//{
-    //int n;
-    //char sendline[MAX_LEN] = {0};
-    //char recvline[MAX_LEN + 1] = {0};
-
-    //for(int i=0; i < times; ++i){
-        //timeval tv1, tv4;
-        //gettimeofday(&tv1, NULL);
-        //uint64_t t1 = tv1.tv_sec * 1000000 + tv1.tv_usec;
-        //memcpy(sendline, &t1, sizeof(t1));
-
-        //int s = sendto(sockfd, sendline, sizeof(t1), 0, pservaddr, len);
-        //if(s == -1){
-            //printf("sendto failed:%s\n", strerror(errno));
-            //break;
-        //}
-
-        //n = recvfrom(sockfd, recvline, MAX_LEN, 0, NULL, NULL);
-        //if(n < 0) {
-            //printf("[%d], recvfrom err\n", i);
-            //continue;
-        //}
-
-        //uint64_t recv_t1  = 0;
-        //memcpy(&recv_t1, &recvline[0], sizeof(recv_t1));
-        //if(recv_t1 != t1) {
-            //printf("\n[%d] = recv error[%llu != %llu]\n", i, t1, recv_t1);
-            ////continue;
-        //}
-
-        //gettimeofday(&tv4, NULL);
-        //uint64_t t4 = tv4.tv_sec * 1000000 + tv4.tv_usec;
-        //printf("[%d] = {t1:%llu t4:%llu} delay:%llu ms\n", i, t1, t4, (t4- recv_t1) / 1000);
-
-        //usleep(interval * 1000);
-    //}
-//}
