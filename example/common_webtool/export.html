@@ -19,10 +19,16 @@
                 {{/each}}
             </script>
         </select>
+        <input id="sync_to_test" type="checkbox" vaule="1"></input>
+        <label id="sync_desc">同步到开发环境</label>
     </div>
     <div>
         <button type="submit" class="funcBtn btn btn-info"> 导表</button>
         <p class="result hidden">这里是结果</p>
+    </div>
+    <div>
+        <label>温馨提示：这里的导表入口即将废弃；后台已搭建了持续导表系统，svn提交excel配置后不再需要人工导表，只需等待2分钟左右即可得到rtx+微信的导表结果通知；如果急需导表，点击下面的链接进入新导表系统，点击“执行”即可立即开始导表；有任何问题可联系 markwei</label>
+        <a href="http://soda.oa.com/ci?id=577" target="_blank">http://soda.oa.com/ci?id=577</a>
     </div>
 </div>
 

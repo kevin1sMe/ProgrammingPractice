@@ -1,36 +1,44 @@
 <!DOCTYPE html>
-<html>
-<head lang="en">
+<html lang="en">
+<head>
     <meta charset="UTF-8">
-    <title></title>
-    <link href="css/style.css" rel="stylesheet" type="text/css" />
+    <title>火影忍者管理工具（新版本）</title>
+    <link href="css/new_style.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="js/handlebars-v3.0.1.js"></script>
     <link rel="stylesheet" href="font-awesome-4.3.0/css/font-awesome.min.css">
-    <!--<link href="bootstrap-3.3.4/css/bootstrap.css" rel="stylesheet" type="text/css" />-->
 </head>
 <body>
-<header>
-    <div class="logo">
-        <h1 class="title"> 火影忍者后台管理工具</h1>
-        <div id="tips">
-            <span id="hello"> </span> <span id="date"> </span>
-        </div>
-    </div>
-</header>
-<div id="status">
-    <span class="online_tips"> 当前玩家总数：0 </span>
+
+<div class="logo">
+    <span class="title">
+         <h1 class="title"> 火影忍者后台管理工具</h1>
+    </span>
+    <span class="tips" id="date"> 早上好，在这里显示一下时间</span>
+</div>
+
+<div class="show_line">
+    <span class="online_tips"> 当前人数：0 </span>
     <select class="main_select">
         <script id="player_list_template" type="text/x-handlebars-template">
-            <option class="{{op_name}}" player_id="{{player_id}}" zone_id="{{zone_id}}"> {{name}} </option>
+            <option class="{{op_name}}" player_name="{{player_name}}" player_id="{{player_id}}" zone_id="{{zone_id}}" open_id="{{open_id}}"> {{name}} </option>
         </script>
     </select>
+    <button class="cpBtn refreshPlayer">刷新玩家</button>
+    <button class="cpBtn cpAll">复制此玩家信息</button>
+    <button class="cpBtn cpGid">复制gid</button>
+    <button class="cpBtn cpZoneid">复制zoneid</button>
+    <button class="cpBtn cpOpenid">复制openid</button>
 </div>
-<div class="wrap" >
-    <div id="left-side">
-        <ul class="menu" data-role="listview">
+
+<div class="content">
+    <div class="left-menu">
+        <!--<span class="menuItem"> 菜单名字 </span>-->
+        <!--<span class="menuItem"> 菜单名字 </span>-->
+        <!--<span class="menuItem"> 菜单名字 </span>-->
+        <ul class="menu menuItem" data-role="listview">
             <script id="menu_list_template" type="text/x-handlebars-template">
-                <li class="menuList" data-url="{{url}}">
-                    <span class="menuItem">
+                <li data-url="{{url}}">
+                    <span>
                     <i class="fa {{icon}}"></i>
                     {{name}}
                    </span>
@@ -39,18 +47,16 @@
         </ul>
 
     </div>
-
-    <div id="right-side">
-        <!--<iframe src="basic.html" class="my_iframe" frameborder="0" scrolling="no" onload="setIframeHeight(this)" > this is iframe</iframe>-->
-        <iframe src="basic.html?cfg=cfgBasicJson" class="my_iframe" > this is iframe</iframe>
+    <div class="right-page">
+        <iframe src="basic.html?cfg=cfgBasicJson" > this is iframe</iframe>
     </div>
+
     <div id="loading" style="display: none"><img src="images/loading.gif"/></div>
 </div>
 <script type="text/javascript" src="js/jquery-1.11.2.min.js"></script>
+<script type="text/javascript" src="js/clipboard.min.js"></script>
 <script type="text/javascript" src="js/cfg.js"></script>
 <script type="text/javascript" src="js/common.js"></script>
 <script type="text/javascript" src="js/main.js"></script>
-<!--<script type="text/javascript" src="bootstrap-3.3.4/js/bootstrap.min.js"></script>-->
-
 </body>
 </html>

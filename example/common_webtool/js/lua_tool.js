@@ -1,43 +1,6 @@
 /**
- * Created by kevin on 2015/8/3.
+ * Created by kevin on 2017/5/9.
  */
-
-var ctx = {
-    "branch_list": [
-    {"branch_name": "trunk", "sync_desc": "同步到17.6开发环境"},
-    {"branch_name": "KiHan10",  "sync_desc": "同步到17.14开发环境"}
-    ]
-};
-
-getDevEnvDesc = function(branch_list, name){
-    for(var e in branch_list){
-        console.dir("e:" + e );
-        if(branch_list[e]["branch_name"] == name){
-            return branch_list[e]["sync_desc"];
-        }
-    }
-    return "没找到这个分支对应的环境"
-}
-
-updateSyncTips = function(){
-    console.log("branch select is :" + $("#branchesSelect").val());
-    var branch_name = $("#branchesSelect").val();
-    var branch_to_dev_env = getDevEnvDesc(ctx["branch_list"], branch_name);
-    console.log("branch_to_dev_env:" + branch_to_dev_env);
-    $("#sync_desc").text(branch_to_dev_env);
-}
-
-
-showBranches = function(data){
-    var source   = $("#branches_list_template").html();
-    console.log("source:" + source);
-    var template = Handlebars.compile(source);
-    console.dir("template:" , template);
-    var html = template(data);
-
-    console.log("html:" + html);
-    $("#branchesSelect").html(html);
-};
 
 showResult = function(str){
     window.parent.$("#loading").hide();
@@ -49,6 +12,42 @@ showResult = function(str){
     $(".funcBtn").attr("disabled", false);
 }
 
+checkFileSize = function(file) {
+	if(typeof file != "undefined"){
+		byteSize = file.size;
+		console.log("file size:" + byteSize);
+		if(Math.ceil(byteSize / 1024) > 63) {
+			console.log("file size limited:" + byteSize);
+			showResult("文件大小不能超过63K。请压缩或者修改文件！");
+			return false
+		}
+	}
+	return true
+}
+
+
+registerCb = function() {
+	console.log("registerCb change");
+    //注册点击提交的事件
+    $("#content, #cmd").change(function () {
+			//使结果隐藏
+    		var $result =  $(".result");
+			$result.removeClass("hidden")
+			$result.addClass("hidden");
+	});
+
+	$("#file").change(function() {
+			//使结果隐藏
+    		var $result =  $(".result");
+			$result.removeClass("hidden")
+			$result.addClass("hidden");
+
+			//检查文件大小
+			checkFileSize($('#file')[0].files[0])
+	})
+}
+
+
 registerSumbit = function() {
     //注册点击提交的事件
     $(".funcBtn").click(function () {
@@ -56,27 +55,71 @@ registerSumbit = function() {
     //使按钮隐藏防止多次点击
     $(this).attr("disabled", true);
 
-    if(window.location.hostname != "devtest1.kihan.oa.com"){
-        showResult("请在17.6环境的管理工具中执行导表操作，可导到17.6或17.14. 其它环境都不能够自助导表")
-        return
-    }
-
 	//使结果隐藏
-    	$(".result").addClass("hidden");
+	$(".result").addClass("hidden");
 
-        //获得选择的分支
-        var branch = $("#branchesSelect");
-        console.log("export btn click, select branch is " + branch.val());
+   var req_str = "/for_peck";
+   var player_id = 0
+   var zone_id = 0
 
-        //获得是否同步到测试环境的需求
-        var sync_to_test = 0
-	if($("#sync_to_test").is(":checked")) {
-		sync_to_test = 1
+   console.log("req_str:" + req_str);
+	//获得父页面中选择的玩家的信息
+	var player = window.parent.$(":selected");
+	if (typeof player == "undefined") {
+		console.log("parent main_select not found");
+	} else {
+		console.dir("player:" + player);
+		console.log("parent main_select found, select " + player.val());
+		player_id = player.attr("player_id")
+		zone_id = player.attr("zone_id")
+
+		console.log("player_id:" + player_id)
+		console.log("zoner_id:" + zone_id)
 	}
-        var req_str = "/cgi-bin/export_xml.sh?branch=" + branch.val() + "&sync_to_test=" + sync_to_test;
-        console.log("req_str:" + req_str);
 
-	$.get(req_str, function(data){
+	//获得cmd（op)
+	var cmd = $("#cmd").val()
+	console.log("cmd:" + cmd)
+	if(cmd=="") {
+		showResult("Lua op(cmd) 不能为空!");
+		return
+	}
+
+
+	var content = $("#content").val()
+	console.log("content:" + content)
+	var file = $('#file')[0].files[0]
+	console.log("file:" + file)
+	if((content=="" && typeof file == "undefined") ){
+		//alert("Content 或者 文件，必须有一个有值");
+		showResult("Content 或者 文件，必须有一个有值");
+		return
+	}
+
+	if(typeof file != "undefined"){
+			//检查文件大小
+			if(!checkFileSize(file)){
+				console.log("check file size failed")
+				showResult("文件大小校验失败！");
+				return
+			}
+	}
+	
+	var formData = new FormData()
+	formData.append('player_id', player_id)
+	formData.append('zone_id', zone_id)
+	formData.append('cmd', cmd)
+	formData.append('content', content)
+	formData.append('file', file)
+
+	$.ajax({
+		url: req_str, 
+		type: 'POST', 
+		cache: false,
+		data: formData, 
+		processData:false,
+		//contentType: 'multipart/form-data'
+		contentType: false
 	})
 	.always(function() {
 		window.parent.$("#loading").show();      
@@ -93,39 +136,16 @@ registerSumbit = function() {
 
     });
 
-    //2016年1月25日 22:55:02@kevin
-    //注册下拉列表框变化时，左侧的复选框中文字跟着变化的事件
-    $("#branchesSelect").change(function(){
-        updateSyncTips();
-    });
 };
 
 $(document).ready(function() {
 
     console.log("in ready function");
-    /*
-    var req_str = "/cgi-bin/get_config_branch_list.sh"
-	$.getJSON(req_str, function(data){
-	})
-    .success(function (data){  
-		console.log("getJson succ, data:" + data);
-        //展示分支列表
-        showBranches(data);
-	})
-    .error(function(data) {     
-		    console.log("getJson error");            
-		    console.log("error cause , data is :" +  data);
-    });
-    */
-
-    //展示分支列表
-    showBranches(ctx);
-
     //注册导表按钮行为
     registerSumbit();
 
-    //先更新一下状态
-    updateSyncTips();
+	//注册回调
+	registerCb();
 });
 
 //registerSumbit = function() {

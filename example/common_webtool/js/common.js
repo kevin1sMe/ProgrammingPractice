@@ -8,7 +8,7 @@ registerButton = function(){
     $(".form-group > button").click(function(){
         var nextSublist = $(this).next(".sublist");
         $(".form-group > .sublist").not(nextSublist).addClass("hidden"); //使用not过滤器，跳过正在操作的按钮的设置，使它也可以有toggle效果
-        $(".form-group > #result").addClass("hidden");
+        $(".form-group > .result").addClass("hidden");
         nextSublist.toggleClass("hidden");
 
         showSubmit($(this).next(".sublist"));
@@ -28,6 +28,7 @@ showList = function(data){
     var source   = $("#optDetail").html();
     var template = Handlebars.compile(source);
     var html = template(data);
+    //console.log("html" + html);
     $("#optList").html(html);
 };
 
@@ -35,6 +36,7 @@ showList = function(data){
 registerSumbit = function() {
 //注册点击提交的事件
     $(".funcBtn").click(function () {
+
         var $parent = $(this).parent();
         //获取cgi名称
         var $label = $parent.find("label:first");
@@ -77,9 +79,20 @@ registerSumbit = function() {
             console.log("parent main_select not found");
         } else {
             console.dir("player:" + player);
+
+			var need_confirm = $label.data("need_confirm");
+			if (need_confirm) {
+				var confirm_txt = "确认操作这个用户[" + player.attr("player_name") + " id: " + player.attr("player_id") + "]吗？";
+				if (confirm(confirm_txt)){
+				} else {
+					return
+				}
+			}
+
             console.log("parent main_select found, select " + player.val());
             cgi += "&player_id=" + player.attr("player_id");
             cgi += "&zone_id=" + player.attr("zone_id");
+            cgi += "&open_id=" + player.attr("open_id");
             console.log(cgi);
         }
 
@@ -91,24 +104,21 @@ registerSumbit = function() {
             window.parent.$("#loading").show();
         })
             .success(function (data) {
-                console.log("req succ, rsp:" + data)
-                showResult($parent, data.toString());
-            }).error(function (data, status) {
-                var errmsg = "req failed, status:" + data.status;
-                console.log("req failed, status:" + status + " data:" + data.status);
-                showResult($parent, errmsg);
-            });
+            window.parent.$("#loading").hide();
+            console.log("req succ, rsp:" + data)
+            var $result = $parent.parent().find(".result:first");
+            $result.html(data.toString());
+            $result.removeClass("hidden");
+        }).error(function (data, status) {
+            window.parent.$("#loading").hide();
+            var errmsg = "req failed, status:" + data.status ;
+            console.log("req failed, status:" + status + " data:" + data.status);
+            var $result = $parent.parent().find(".result:first");
+            $result.text(errmsg);
+            $result.removeClass("hidden");
+        });
 
     });
-}
-
-showResult = function(btn, str){
-    window.parent.$("#loading").hide();
-    var $div = btn.parent();
-    var $result =  $div.find("p:first");
-    console.dir("result:" + $result);
-    $result.text(str);
-    $result.removeClass("hidden");
 }
 
 //初始化submit状态
@@ -153,23 +163,23 @@ function writeNowTime(){
     if(day==5) day = "星期五";
     if(day==6) day = "星期六";
     //问候
+    var str = ""
     if(hour>0&&hour<=6){
-        $("#hello").html("午夜好");
+        str = "午夜好, 注意休息哦~";
     }else if(hour>6&&hour<=9){
-        $("#hello").html("早上好");
+        str = "早上好";
     }else if(hour>9&&hour<=11){
-        $("#hello").html("上午好");
+        str = "上午好";
     }else if(hour>11&&hour<=14){
-        $("#hello").html("中午好");
+        str = "中午好";
     }else if(hour>14&&hour<=18){
-        $("#hello").html("下午好");
+        str = "下午好";
     }else{
-        $("#hello").html("晚上好");
+        str = "晚上好";
     }
 
-    //FIXME 为什么html中有个，没展示出来？
     //时间
-    $("#date").html("，今天是"+year+"年"+month+"月"+date+"日 "+day);
+    $("#date").html(str + "，今天是"+year+"年"+month+"月"+date+"日 "+day);
     console.log("今天是"+year+"年"+month+"月"+date+"日 "+day);
 }
 

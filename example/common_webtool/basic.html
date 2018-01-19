@@ -15,17 +15,18 @@
 <script id="optDetail" type="text/x-handlebars-template">
     {{#funcList}}
         <div class="form-group">
-        <button type="button" class="btn btn-primary btn-lg btn-block"> {{name}}</button>
-        <div class="sublist hidden" >
-            <label for="{{id}}" class="funcLabel" data-url="{{url}}" data-need_all_params="{{need_all_params}}" ></label>
-            {{!-- <input id="{{id}}" type="text" class="form-control funcInput" placeholder="{{desc}}" data-url="{{url}}"> --}}
-            {{#each inputList}}
-                <input id="{{this.name}}" type="text" class="form-control funcInput" placeholder="{{this.desc}}">
-            {{/each}}
-            <button type="submit" class="funcBtn btn btn-info" disabled="true"> 提交</button>
-            <p class="result hidden">这里是结果</p>
+            <button type="button" class="funcList btn btn-primary btn-lg btn-block"> {{name}}</button>
+            <div class="sublist hidden" >
+                <label for="{{id}}" class="funcLabel" data-url="{{url}}" data-need_all_params="{{need_all_params}}" data-need_confirm="{{need_confirm}}" ></label>
+                    {{!-- <input id="{{id}}" type="text" class="form-control funcInput" placeholder="{{desc}}" data-url="{{url}}"> --}}
+                    {{#each inputList}}
+                        <input id="{{this.name}}" type="text" class="form-control funcInput" placeholder="{{this.desc}}">
+                    {{/each}}
+                <button type="submit" class="funcBtn btn btn-info" disabled="true"> 提交</button>
+            </div>
+        <div class="result hidden">
+            <p>这里是结果</p>
         </div>
-
     </div>
     {{/funcList}}
 </script>
