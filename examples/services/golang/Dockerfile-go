@@ -1,0 +1,6 @@
+FROM golang:latest
+COPY test.go /go/src
+
+WORKDIR /go/src
+RUN go build test.go
+CMD ["./test"]
