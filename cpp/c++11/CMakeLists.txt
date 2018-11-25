@@ -5,7 +5,7 @@ project(cpp)
 set(CMAKE_CXX_COMPILER  g++)
 set(CMAKE_CXX_FLAGS     -std=c++11 -Werror -Wall)
 
-set(CMAKE_VERBOSE_MAKEFILE  off)
+set(CMAKE_VERBOSE_MAKEFILE  on)
 set(CMAKE_COLOR_MAKEFILE    on)
 
 file(GLOB CPP_SOURCE *.cpp)
