@@ -1,0 +1,41 @@
+syntax = "proto3";
+
+package match;
+//匹配服务
+
+message RetInfo {
+    int32 ret = 1;          //返回码，0正常
+    string err_msg = 2;     //如果非0，err_msg可能包含错误内容
+}
+
+service MatchServ {
+    //匹配
+    rpc TryMatch(TryMatchRequest) returns (TryMatchResponse) {}
+
+    //查询匹配状态
+    rpc GetStatus(GetStatusRequest) returns (GetStatusResponse) {}
+
+}
+
+
+//请求匹配
+message TryMatchRequest {
+    string client_ip = 1;   //用于区分不同客户端的id，建议暂时填ip，形如 10.23.45.67
+    bytes match_data = 2;   //玩家的其它数据，服务器透传
+}
+
+
+message TryMatchResponse {
+    RetInfo ret_info = 1;
+}
+
+
+//获取匹配状态
+message GetStatusRequest {
+    string client_ip = 1;   //用于区分不同客户端的id，建议暂时填ip，形如 10.23.45.67
+}
+
+message GetStatusResponse {
+    RetInfo ret_info = 1;       //0代表匹配成功  1匹配中   2匹配超时 
+    repeated bytes match_data_list = 2;   //匹配成功后玩家的列表
+}
