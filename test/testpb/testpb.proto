@@ -1,0 +1,7 @@
+package testpb;
+
+message Person
+{
+    optional string name = 1;
+    optional uint32 age = 2;
+}
