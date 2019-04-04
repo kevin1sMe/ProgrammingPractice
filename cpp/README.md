@@ -1,2 +1,2 @@
 # ProgrammingPractice
-some practice about kinds of programming language
+some practice about kinds of technology & language
