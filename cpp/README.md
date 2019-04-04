@@ -1,2 +1,3 @@
-# ProgrammingPractice
-some practice about kinds of technology & language
+## C++ && Morden C++
+
+一些小特性的练习代码
