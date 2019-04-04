@@ -1,0 +1,12 @@
+FROM ubuntu:16.04
+RUN sed -i 's#http://archive.ubuntu.com#http://mirrors.163.com#g' /etc/apt/sources.list  && \
+        apt-get update && apt-get -y install netcat
+
+COPY svr.sh /home/services/shell/
+WORKDIR /home/services/shell
+
+RUN chmod +x svr.sh
+
+CMD ["./svr.sh"]
+
+
