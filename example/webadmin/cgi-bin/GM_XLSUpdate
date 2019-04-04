@@ -1,0 +1,110 @@
+#!/bin/bash
+
+#modify by kevinlin at 2014-01-2
+#2014年1月4日 00:34:14 有个关于daemon()的故事，在这里把我缠住了好久 2014年1月4日 00:34:14
+
+
+source bashlib
+#. /usr/local/bin/bashlib
+
+CUR_DIR=`pwd`
+
+cat ./header.txt
+LOG_FILE=/data/ml/svn/info.log
+LOCK_FILE=/data/ml/svn/lockfile.tmp
+
+#只允许同时一个实际执行
+if [ -e ${LOCK_FILE} ] ; then
+    echo "`eval ${NOW}` <font color=red> 抱歉，服务器正在执行配置生成，请稍后再试。若一直不成功，来骚扰我们~~ </font><br>"
+    exit 0
+else
+    touch ${LOCK_FILE}
+    echo $$ >> ${LOCK_FILE}
+    chmod 600 ${LOCK_FILE}
+fi
+
+trap "echo 'in trap' >> ${LOG_FILE} ; rm -f ${LOCK_FILE}; exit" INT TERM EXIT
+
+
+#rm -rf ${LOG_FILE}
+echo "==========================">> ${LOG_FILE}
+echo "pid:$$" >> ${LOG_FILE}
+
+NOW="date +'%Y-%m-%d %H:%M:%S'"
+
+echo "`eval $NOW` start" >>  ${LOG_FILE}
+echo "`eval ${NOW}` <font color=red> 生成配置吗， 好的好的, 我目前职责是自动生成trunk上的配置哦~~ </font><br>"
+
+
+#调用 abs由dailybuild处理
+echo "`eval ${NOW}` <font color=red> 1. 正在将生成配置请求交给10.12.16.82机器之dailybuild用户处理 </font>"
+#后续的一些远程操作都是在这个目录由abs脚本进行，故直接cd进去了
+cd ${CUR_DIR}/abs3.0.2 
+#生成配置
+./do.sh 82 config.justdo
+
+ERR_LINE=`egrep "ERROR|FAIL" absresult`
+ERR_COUNT=`egrep "ERROR|FAIL" absresult | wc -l`
+#echo "ERR_COUNT:${ERR_COUNT}"
+
+if [ ${ERR_COUNT} -gt 0 ]; then
+	echo "`eval ${NOW}` <font color=red> 2. 配置生成过程中发生错误！ </font>"
+	echo ${ERR_LINE}
+	exit 0
+else
+	#生成配置处理完成
+	echo "`eval ${NOW}` <font color=red> 2. 配置生成完毕。已经提交至svn, 如果你是客户端同学，那么可以去拉取最新配置了, 再见 </font>"
+fi
+
+
+#将lua配置同步到36机器。
+
+#同步lua到 zonesvr
+echo "`eval ${NOW}` <font color=red> 3. 正在同步配置到 zonesvr(大区) [测试环境36机器]</font>"
+
+cd ${CUR_DIR}/abs3.0.2 
+./do.sh 82 config.update.zonesvr
+
+
+cd /data/ml/zonesvr/script; 
+./admin.sh restart &
+wait
+
+echo "`eval ${NOW}` <font color=red> 4. 同步配置到 zonesvr(大区)完毕 [测试环境36机器]</font>"
+
+ERR_COUNT=`egrep "ERROR|FAIL|fail" ${RESULT} | wc -l`
+
+if [ ${ERR_COUNT} -gt 0 ]; then
+	echo "`eval ${NOW}` <font color=red> 5. 重启大区时，发生错误，注意：大区启动失败！ </font>"
+	echo ${ERR_LINE}
+	exit 0
+else
+	echo "`eval ${NOW}` <font color=red> 5. 大区重启成功 </font>"
+fi
+
+
+#同步lua到 gamesvr
+#echo "${NOW} <font color=red> 4. 正在同步配置到 gamesvr(游戏服务器) [测试环境36机器]</font>"
+
+
+#echo "${NOW} process xls" >> /data/ml/svn/info.log
+#cd /data/ml/svn/excel2lua/;
+#svn up 
+#./do_all.sh do 2>&1 > /dev/null
+
+#FIXME 如果有错误，需要将错误在页面中反鐀出来
+
+#echo "${NOW} <font color=red>processing svn check-in......</font>" 
+#echo "${NOW} process svn" >> /data/ml/svn/info.log
+#svn ci -m "update: for webadmin" lua/
+
+#echo "<font color=red>server config refresing ......</font>" 2>&1
+#echo "process svr" >> /data/ml/svn/info.log
+#cp /data/ml/svn/zonesvr/lua/* /data/ml/zonesvr/lua/
+#cd /data/ml/zonesvr/script/; ./admin.sh restart
+
+echo "`eval $NOW` end, then stop" >>  ${LOG_FILE}
+rm -r ${LOCK_FILE}
+
+
+

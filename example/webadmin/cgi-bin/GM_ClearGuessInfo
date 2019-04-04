@@ -1,0 +1,27 @@
+#!/bin/bash
+
+source bashlib
+#. /usr/local/bin/bashlib
+
+cat ./header.txt
+
+uin=`param uin`
+cmd=`param cmd`
+
+property=""
+
+case $cmd in
+23) property="clear guess info"
+        ;;
+24) property="clear brotherhood info"
+        ;;
+39) property="clear tower info"
+        ;;
+
+esac
+
+
+echo $property
+echo ""
+
+/data/ml/tools/./gm_tool 10.12.194.36 8082 $uin $cmd 1=1

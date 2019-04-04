@@ -1,0 +1,17 @@
+#!/bin/bash
+
+source bashlib
+#. /usr/local/bin/bashlib
+
+source SetGMEnv
+cat ./header.txt
+
+uin=`param uin`
+val=`param val`
+cmd=`param cmd`
+
+
+echo "QQ:$uin command=$cmd, set days=$val"
+echo ""
+
+${GMTOOL_PATH} ${GMTOOL_IP} ${GMTOOL_PORT} $uin $cmd days=$val 

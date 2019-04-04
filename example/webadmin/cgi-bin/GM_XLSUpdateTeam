@@ -1,0 +1,17 @@
+#!/bin/bash
+
+source bashlib
+#. /usr/local/bin/bashlib
+
+cat ./header.txt
+
+echo "<font color=red>processing xls to lua ......</font>" 2>&1
+echo "process xls" >> /data/ml/svn/info.log
+cd /data/ml/svn/excel2lua/; /data/ml/svn/excel2lua/./do_team.sh 2>&1
+
+echo "<font color=red>server config refresing ......</font>" 2>&1
+echo "process svr" >> /data/ml/svn/info.log
+cp /data/ml/svn/zonesvr/lua/* /data/ml/zonesvr/lua/
+cd /data/ml/zonesvr/script/; ./admin.sh restart
+
+echo "process done" >> /data/ml/svn/info.log

@@ -1,0 +1,17 @@
+#!/bin/bash
+
+source bashlib
+#. /usr/local/bin/bashlib
+
+source SetGMEnv
+cat ./header.txt
+
+uin=`param uin`
+cmd=`param cmd`
+act=`param act`
+
+
+echo "clear act ["$act"]..."
+echo ""
+
+${GMTOOL_PATH} ${GMTOOL_IP} ${GMTOOL_PORT} $uin $cmd ActId=$act

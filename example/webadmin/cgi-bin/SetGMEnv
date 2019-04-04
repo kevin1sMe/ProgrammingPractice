@@ -1,0 +1,5 @@
+#!/bin/bash
+
+export GMTOOL_PORT=8082
+export GMTOOL_PATH=/data/ml/tools/./gm_tool
+export GMTOOL_IP=10.12.194.36

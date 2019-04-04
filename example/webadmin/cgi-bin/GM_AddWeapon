@@ -1,0 +1,25 @@
+#!/bin/bash
+
+source bashlib
+#. /usr/local/bin/bashlib
+
+source SetGMEnv
+
+cat ./header.txt
+
+uin=`param uin`
+cmd=`param cmd`
+WeaponID=`param WeaponID`
+EnhanceLevel=`param EnhanceLevel`
+PromoteLevel=`param PromoteLevel`
+
+case $cmd in
+25)
+	echo "QQ:$uin Add Weapon/$cmd: $WeaponID, $EnhanceLevel, $PromoteLevel"
+	;;
+esac
+
+echo ""
+
+#/data/ml/tools/./gm_tool 10.12.194.36 8082 $uin $cmd WeaponID=$WeaponID EnhanceLevel=$EnhanceLevel PromoteLevel=$PromoteLevel
+${GMTOOL_PATH} ${GMTOOL_IP} ${GMTOOL_PORT} $uin $cmd WeaponID=$WeaponID EnhanceLevel=$EnhanceLevel PromoteLevel=$PromoteLevel

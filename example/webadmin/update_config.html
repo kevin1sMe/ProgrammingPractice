@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>刷新配置</title>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/jquery.ui.core.js"></script>
+<script type="text/javascript" src="js/jquery.ui.widget.js"></script>
+<script type="text/javascript" src="js/jquery.ui.datepicker.js"></script>
+<script type="text/javascript" src="js/jquery.date.cn.js"></script>
+<script type="text/javascript" src="js/page.js"></script>
+<link href="js/themes/flick/jquery.ui.all.css" rel="stylesheet" type="text/css" />
+<link href="js/themes/flick/jquery.ui.datepicker.css" rel="stylesheet" type="text/css" />
+<link href="css/reset.css" rel="stylesheet" type="text/css" />
+<link href="css/page.css" rel="stylesheet" type="text/css" />
+<style type="text/css">
+.result{ position:relative;}
+#code{ padding-top:4px;}
+.result pre{ background-color:#fcfeff; border:1px dashed #999;line-height:18px;padding-left:40px; margin:0; text-indent:0px;}
+#lineID{ position:absolute;line-height:18px; padding:0 4px; left:1px; top:5px; background-color:#999; color:#FFF; font-size:12px;}
+</style>
+<script type="text/javascript">
+function refresh_config(){
+	$.ajax({
+	  type: "POST",
+	  url: "/cgi-bin/GM_XLSUpdate",
+	  dataType: "html",
+	  data:"",
+	  timeout:720000,
+	  beforeSend: function(){
+		$("#loading").show();
+	  },
+	  success:function(data){
+	 	$("#loading").hide(); 
+		$("#code").html(data+"</pre>");
+		getLine();
+
+	  },
+	  error:function(){
+	 	$("#loading").hide(); 
+		location.href = "./tips.html";
+	  }
+	});	
+}
+
+var timeer = null;
+function getLine(){
+	clearTimeout(timeer);
+	timeer = setTimeout(function(){
+	  var divHeight = $("#code")[0].offsetHeight;
+	  if(parseInt(divHeight)>0){
+		var row = Math.floor(divHeight/18);
+		$("#lineID")[0].innerHTML = "";
+		$("#lineID")[0].style.height = row*18 + "px";
+		$("#lineID")[0].style.display = "block";
+		
+		for(var i=0;i<row;i++){
+			$("#lineID")[0].innerHTML+=(i+1)+"<br />";
+		}
+	  }					
+	},60)	
+}
+</script>
+</head>
+<body>
+<div class="p10">
+    <div class="warn">
+      <font color="black">EXCEL 配置修改完成并提交到svn后在此更新，由于网络问题目前只支持36内网，请使用windows端测试</font><br>
+      <font color="black">外网实时同步更新暂不支持，内网体验积累后通知后台统一更新现网做真实测试体验，谢谢。</font><br>
+      <font color="red">注意：处理步骤较多，可能需要稍等一分钟左右......</font><br>
+      <font color="red">切忌频繁点击，防止不同步导致数据出错，后果自负哦......</font><br><br>
+      <form>
+      <input type="hidden" value="1" name="data">
+      <input type="button" class="button" value="点我刷新" name="" onclick="refresh_config();" ></form>
+    </div>
+    <div class="result">
+        <div id="code"><pre>暂无数据...</pre></div>
+    	<div id="loading" style="display:none"><img src="images/loading.gif"/></div>
+        <div id="lineID" style="display:none;"></div>
+    </div>
+</div>
+</body>
+</html>
+

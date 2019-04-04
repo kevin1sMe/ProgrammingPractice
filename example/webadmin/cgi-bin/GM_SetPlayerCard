@@ -1,0 +1,32 @@
+#!/bin/bash
+
+source bashlib
+#. /usr/local/bin/bashlib
+
+source SetGMEnv
+cat ./header.txt
+
+uin=`param uin`
+cmd=`param cmd`
+cardId=`param cardId`
+cardXn=`param cardXn`
+cardProperty="CardLevel"
+
+case $cmd in
+9)
+	cardProperty="CardLevel"
+	echo "QQ:$uin Add Card/$cmd: $cardId, $cardProperty=$cardXn"
+	;;
+10)
+	cardProperty="CardKey"
+	echo "QQ:$uin Del Card/$cmd: $cardId, $cardProperty=$cardXn"
+	;;
+20)
+	cardProperty="CardKey"
+	echo "QQ:$uin Del TeamCard/$cmd: $cardId, $cardProperty=$cardXn"
+	;;
+esac
+
+echo ""
+
+${GMTOOL_PATH} ${GMTOOL_IP} ${GMTOOL_PORT} $uin $cmd CardId=$cardId $cardProperty=$cardXn

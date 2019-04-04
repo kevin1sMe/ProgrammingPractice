@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+</head>
+<style type="text/css">
+a.tips {
+	color: red;
+	text-decoration: none;
+	position: relative;
+}
+
+a.tips span {display: none; } /*使tips先不显示*/
+
+a.tips:hover { cursor:hand;} /* 这是个小技巧。因为IE对hover 伪对象的支持不是很完善，只有设置了cursor:hand 后才能使a对象在hover状态下，可以对其中的span进行display:block;的设置，而在firefox中就没有这个问题了。*/
+
+a.tips:hover .popbox {
+	display: block;
+	position: absolute;
+	top: 15px;
+	left: -180px;	
+	width: 300px;
+	background-color: #424242;
+	color: #fff;
+	padding: 10px;
+}
+
+
+</style>
+<body>
+
+<h1>腾讯体育讯 </h1>
+
+<p>在欧冠第六轮的比赛中，红军利物浦主场1-1战平巴塞尔无缘16强。队长<a href="#" class="tips">杰拉德 <span class="popbox"> 史蒂文·杰拉德（Steven Gerrard,1980年5月30日-），生于 英格兰惠斯顿，英格兰足球运动员，司职中场，效力于英超联赛利物浦足球 俱乐部，是球队核心和精神领袖。杰拉德身体素质出众、技术全面、可以胜任多个位置、大力远射是绝活。</span></a>
+虽然打入一脚精彩的任意球却难以像10年前一样力挽狂澜。最终利物浦无缘欧冠淘汰赛，而谁也不知道这会不会是杰队职业生涯中最后一场欧冠......
+</p>
+
+
+
+
+</body>
+</html>

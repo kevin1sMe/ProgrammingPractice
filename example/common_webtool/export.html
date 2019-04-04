@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title> 导表更新服务器页面 </title>
+    <link href="bootstrap-3.3.4/css/bootstrap.css" rel="stylesheet" type="text/css" />
+    <link href="css/style.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="js/handlebars-v3.0.1.js"></script>
+</head>
+<body>
+
+<div id="branchesList" >
+    <div>
+        <span id="branchesTips"> 请选择要导表的分支： </span>
+        <select id="branchesSelect">
+            <script id="branches_list_template" type="text/x-handlebars-template">
+                {{#each branch_list}}
+                <option> {{branch_name}} </option>
+                {{/each}}
+            </script>
+        </select>
+        <input id="sync_to_test" type="checkbox" vaule="1"></input>
+        <label id="sync_desc">同步到开发环境</label>
+    </div>
+    <div>
+        <button type="submit" class="funcBtn btn btn-info"> 导表</button>
+        <p class="result hidden">这里是结果</p>
+    </div>
+    <div>
+        <label>温馨提示：这里的导表入口即将废弃；后台已搭建了持续导表系统，svn提交excel配置后不再需要人工导表，只需等待2分钟左右即可得到rtx+微信的导表结果通知；如果急需导表，点击下面的链接进入新导表系统，点击“执行”即可立即开始导表；有任何问题可联系 markwei</label>
+        <a href="http://soda.oa.com/ci?id=577" target="_blank">http://soda.oa.com/ci?id=577</a>
+    </div>
+</div>
+
+<script type="text/javascript" src="js/jquery-1.11.2.min.js"></script>
+<script type="text/javascript" src="bootstrap-3.3.4/js/bootstrap.min.js"></script>
+<!--<script type="text/javascript" src="js/cfg.js"></script>-->
+<!--<script type="text/javascript" src="js/common.js"></script>-->
+<!--<script type="text/javascript" src="js/load.js"></script>-->
+<script type="text/javascript" src="js/export.js"></script>
+
+
+</body>
+</html>

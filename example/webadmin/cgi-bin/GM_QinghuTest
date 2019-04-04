@@ -1,0 +1,14 @@
+#!/bin/bash
+
+source bashlib
+#. /usr/local/bin/bashlib
+
+cat ./header.txt
+
+testparam=`param testparam`
+
+echo "testparam=$testparam"
+
+chmod a+x  /data/ml/ml_client/ML_Project/Tools/VersionUpdateControl
+cd /data/ml/ml_client/ML_Project/Tools/VersionUpdateControl
+sh mac_version_control.sh

@@ -1,0 +1,18 @@
+#!/bin/bash
+
+source bashlib
+#. /usr/local/bin/bashlib
+
+source SetGMEnv
+cat ./header.txt
+
+uin=`param uin`
+cmd="40"
+is_set=`param is_set`
+value=`param value`
+
+
+echo "server offset set ["$is_set"] value["$value"]..."
+echo ""
+
+${GMTOOL_PATH} ${GMTOOL_IP} ${GMTOOL_PORT} $uin $cmd Set=$is_set Value=$value

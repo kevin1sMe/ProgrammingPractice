@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+<style type="text/css">
+
+ul {
+	 padding: 0;
+	 margin: 0;
+	 list-style: none;
+}
+ 
+li {
+	float: left; --使导航是横的，对li设置float:left属性,使所有li向左浮动
+	width: 160px;	 
+} 0
+
+li ul {
+	display: none; --使li下的ul隐藏
+	top: 20px;
+}
+
+#nav li ul li{
+	float: none;	--原示例中缺少这一行，会使li横向
+}
+
+
+ul li a {
+	display:block;
+	font-size: 12px;
+	border: 1px solid #ccc;
+	padding: 3px;
+	text-decoration: none;
+	color: #777;
+}
+
+ul li a:hover {
+	background-color: #f4f4f4;	
+}
+
+li:hover ul, li.over ul{
+	display: block;	 --当移动过去时使显示
+		--li:hover ul 定义了li元素在hover状态下，ul元素的显隐模式
+		--li.over ul 定义了class为over的li元素下的显隐模式,
+		--中间的, （逗号) ，让这两种情况使用相关的display:block 属性
+}
+
+</style>
+
+<script type="text/javascript"><!--
+	startList = function() {
+		if(document.all && document.getElementById) {
+			navRoot = document.getElementById("nav");
+			for(i=0; i < navRoot.childNodes.length; i++){
+				node = navRoot.childNodes[i];
+				if(node.nodeName=="LI") {
+					node.onmouseover=function(){
+						this.className+=" over";
+					}
+					
+					node.onmouseout = function() {
+						this.className=this.className.replace(" over", "")
+					}
+				}
+			}
+		}
+	}
+	
+	window.onload = startList;
+	//-->
+</script>
+
+</head>
+
+<body>
+<ul id="nav">
+	<li> <a href=""> 文章 </a>
+    	<ul>
+        	<li> <a href="">CSS教程</a> </li>
+            <li> <a href="">DOM教程</a> </li>
+        </ul>
+    </li>
+    <li> <a href=""> 参考 </a>
+    	<ul>
+        	<li> <a href="">XHTML</a> </li>
+            <li> <a href="">XML</a> </li>
+            <li> <a href="">CSS</a> </li>
+        </ul>
+    </li>
+</ul>
+
+
+</body>
+</html>

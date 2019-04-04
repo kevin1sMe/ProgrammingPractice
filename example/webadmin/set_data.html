@@ -1,0 +1,97 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>用户信息查询</title>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/jquery.ui.core.js"></script>
+<script type="text/javascript" src="js/jquery.ui.widget.js"></script>
+<script type="text/javascript" src="js/jquery.ui.datepicker.js"></script>
+<script type="text/javascript" src="js/jquery.date.cn.js"></script>
+<script type="text/javascript" src="js/page.js"></script>
+<link href="js/themes/flick/jquery.ui.all.css" rel="stylesheet" type="text/css" />
+<link href="js/themes/flick/jquery.ui.datepicker.css" rel="stylesheet" type="text/css" />
+<link href="css/reset.css" rel="stylesheet" type="text/css" />
+<link href="css/page.css" rel="stylesheet" type="text/css" />
+
+<style type="text/css">
+.result{ position:relative;}
+#code{ padding-top:4px;}
+.result pre{ background-color:#fcfeff; border:1px dashed #999;line-height:18px;padding-left:40px; margin:0; text-indent:0px;}
+#lineID{ position:absolute;line-height:18px; padding:0 4px; left:1px; top:5px; background-color:#999; color:#FFF; font-size:12px;}
+</style>
+<script type="text/javascript">
+function setInfo(){
+	var uin = $("#uin").val();
+	var val = $("#val").val();
+	var cmd = $("#cmd").val();
+	$.ajax({
+	  type: "POST",
+	  url: "/cgi-bin/GM_SetPlayerData",
+	  dataType: "html",
+	  data:"uin="+uin+"&val="+val+"&cmd="+cmd,
+	  success:function(data){
+		  $("#code").html(data+"</pre>");
+		  getLine();
+
+	  },
+	  error:function(){
+		  location.href = "../tips.html";
+	  }
+	});	
+}
+
+var timeer = null;
+function getLine(){
+	clearTimeout(timeer);
+	timeer = setTimeout(function(){
+	  var divHeight = $("#code")[0].offsetHeight;
+	  if(parseInt(divHeight)>0){
+		var row = Math.floor(divHeight/18);
+		$("#lineID")[0].innerHTML = "";
+		$("#lineID")[0].style.height = row*18 + "px";
+		$("#lineID")[0].style.display = "block";
+		
+		for(var i=0;i<row;i++){
+			$("#lineID")[0].innerHTML+=(i+1)+"<br />";
+		}
+	  }					
+	},60)	
+}
+</script>
+</head>
+<body>
+<div class="p10">
+	<div class="warn">
+	  <form method="" action="" name="">
+	  　QQ号码：
+	  <input type="text" class="input-text" name="uin" id="uin">
+	  <select id="cmd">
+	  	<option value="1">等级</option>
+	  	<option value="2">体力</option>
+	  	<option value="3">最大体力</option>
+	  	<option value="4">铜币</option>
+	  	<option value="5">领导力</option>
+	  	<option value="6">最大领导力</option>
+	  	<option value="7">银票</option>
+	  	<option value="8">功勋</option>
+	  	<option value="16">经验</option>
+	  	<option value="18">最大情义值</option>
+	  	<option value="19"> 当天情义值</option>
+	  	<option value="30">vip等级</option>
+	  	<option value="32">累计充值额度</option>
+	  	<option value="34">千层塔进度</option>
+	  	<option value="42">声望</option>
+	  	<option value="44">周卡时间修改</option>
+	  </select>
+	  <input type="text" class="input-text" name="val" id="val">
+      <input type="button" class="button" value="确定" name="" onclick="setInfo();" ></form>
+    </div>
+	<div class="result">
+        <div id="code"><pre>暂无数据...</pre></div>
+        <div id="lineID" style="display:none;"></div>
+    </div>
+</div>
+</body>
+</html>
+
