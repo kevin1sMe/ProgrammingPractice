@@ -1,9 +1,8 @@
-go_test
-=======
-
+## go_test
+---
 some test about go lang
 
-##Test
+## Test
 
 ### test_tcpsvr.go/test_tcpcli.go
 
@@ -13,5 +12,5 @@ some test about go lang
 
 * 使用protobuf进行通信的tcp示例
 
-###exercise/upload_*.go
+### exercise/upload_*.go
 * 使用http进行文件上传
