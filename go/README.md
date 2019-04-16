@@ -14,3 +14,6 @@ some test about go lang
 
 ### exercise/upload_*.go
 * 使用http进行文件上传
+
+### pb_compress
+* 针对pb的紧凑编码的字节流，测试各种压缩算法对它继续压缩的空间

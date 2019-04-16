@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package testpb;
+
+message Ninjia
+{
+    uint32 id = 1;
+    uint32 hp = 2;//血量百分比， 100以内
+}
+
+message NinJiaHistory
+{
+    repeated Ninjia ninjia_list = 1;
+}
