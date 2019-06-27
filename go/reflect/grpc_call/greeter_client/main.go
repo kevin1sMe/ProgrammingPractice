@@ -38,12 +38,12 @@ const (
 
 var methods map[string]reflect.Value
 
+//通过反射注册所有的methods, 主要是为了缓存减少每次的开销
 func RegisterGrpcCall(c pb.GreeterClient) {
 	methods = make(map[string]reflect.Value)
 
 	t := reflect.TypeOf(c)
 	v := reflect.ValueOf(c)
-	log.Printf("type info:%T methods:%d", t, t.NumMethod())
 	for i := 0; i < t.NumMethod(); i++ {
 		m := t.Method(i)
 		methods[m.Name] = v.Method(i)
@@ -51,12 +51,15 @@ func RegisterGrpcCall(c pb.GreeterClient) {
 	}
 }
 
+//发起method指定的grpc调用。这里注意使用了传来的ctx, 如果上层ctx超时取消，会触发本次调用 被cancel等。
 func GrpcCall(method string, ctx context.Context, req interface{}) (interface{}, error) {
 	m, ok := methods[method]
 	if ok {
-		args := []reflect.Value{reflect.ValueOf(ctx), reflect.ValueOf(req)}
+		newCtx, cancel := context.WithTimeout(ctx, time.Second)
+		defer cancel()
+
+		args := []reflect.Value{reflect.ValueOf(newCtx), reflect.ValueOf(req)}
 		ret := m.Call(args)
-		fmt.Printf("return type: %T %T", ret[0].Interface(), ret[1].Interface())
 		if ret[1].Interface() == nil {
 			return ret[0].Interface(), nil
 		} else {
@@ -68,8 +71,7 @@ func GrpcCall(method string, ctx context.Context, req interface{}) (interface{},
 
 func GrpcCallWithFunc(f interface{}, ctx context.Context, req interface{}) {
 	type HandlerType func(context.Context, interface{}) interface{}
-	fmt.Println("test")
-	m, ok := f.(HandlerType) //这种方式不能成功
+	m, ok := f.(HandlerType) //这种方式不能成功, 因为类型不匹配
 	if ok {
 		fmt.Println("ok")
 		HandlerType(m)(ctx, req)
@@ -114,5 +116,4 @@ func main() {
 		// req = &pb.HelloRequest{Name: "a_new_call_req"}
 		// GrpcCallWithFunc(c.SayHello, ctx, req)
 	}
-	//log.Printf("Greeting: %s", r.Message)
 }
