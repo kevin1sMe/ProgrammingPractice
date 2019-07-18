@@ -1,0 +1,5 @@
+tracing:
+    tjgappid: "tjg_test"
+    samplingRate: 1024
+    speedMinRate: 10
+    speedMaxRate: 100
